@@ -427,3 +427,15 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Go build artifacts
+*.exe~
+*.test
+*.out
+vendor/
+
+# Environment files and Azure/Foundry local state
+.env
+.env.*
+!.env.example
+.azure/

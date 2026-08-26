@@ -1,0 +1,1 @@
+Evaluate whether the agent responds as a friendly general-purpose assistant and keeps answers brief while directly addressing the user request.

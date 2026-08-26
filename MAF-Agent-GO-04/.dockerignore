@@ -1,0 +1,8 @@
+.azure
+.env
+.foundry
+.git
+.gitignore
+bin
+obj
+README.md
