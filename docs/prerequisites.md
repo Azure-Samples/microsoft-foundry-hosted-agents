@@ -7,14 +7,16 @@ This guide prepares the repository for local builds and Microsoft Foundry calls 
 The repository dev container includes .NET 10, Go 1.26, CMake, Ninja, a C++20 compiler, vcpkg, Azure CLI, Azure Developer CLI, and GitHub CLI. After the container opens:
 
 1. Sign in from a terminal **inside the container** with `az login`. A sign-in on the host is not automatically shared with the container.
-2. In VS Code, run **Tasks: Run Build Task**, then select **Build and test all samples**.
-3. Set the environment variables for your terminal shell as described below before running an agent.
+2. Set the environment variables for your terminal shell as described below.
+3. Choose and run an agent from the repository [Run guide](../README.md#run).
 
-During first-time container creation, lifecycle commands restore NuGet and Go
-modules and configure both C++ samples to restore their vcpkg dependencies.
-The C++ step can take several minutes on a cold cache. Named cache volumes
-retain downloads and compiled vcpkg packages, so later builds and recreated
-containers are substantially faster.
+During first-time container creation, lifecycle commands build all six samples,
+including restoring NuGet, Go, and vcpkg dependencies. The C++ step can take
+several minutes on a cold cache. Named cache volumes retain downloads and
+compiled dependencies, so later builds and recreated containers are
+substantially faster. You do not need to build again before the first run. After
+changing code, use the commands in the repository [Build section](../README.md#build)
+or run the VS Code **Build and test all samples** task.
 
 The default dev container does not mount a Docker daemon. Docker is not needed to build, test, or run the samples from source; it is needed only for local container-image builds. Hosted-agent deployment uses an Azure remote build.
 

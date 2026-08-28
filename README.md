@@ -45,13 +45,15 @@ and the [Dev Containers extension](https://marketplace.visualstudio.com/items?it
 then run **Dev Containers: Reopen in Container** from the VS Code command
 palette. GitHub Codespaces automatically uses the same configuration.
 
-After the container opens, run the **Build and test all samples** task. The
-first container creation can take several minutes while vcpkg builds C++
-dependencies. The container configures both C++ samples automatically, and
-persistent cache volumes make subsequent rebuilds and recreated containers
-faster. The default configuration does not mount a Docker socket. Docker is
-unnecessary for source builds and local runs. Run `az login` inside the
-container only when you want to make live Microsoft Foundry calls.
+The container automatically builds all six samples when it is first created.
+This can take several minutes while vcpkg builds C++ dependencies. Persistent
+cache volumes make subsequent rebuilds and recreated containers faster. After
+the initialization finishes, you only need to run `az login` inside the
+container, set the environment variables below, and choose an agent from the
+[Run](#run) section.
+
+The default configuration does not mount a Docker socket. Docker is unnecessary
+for source builds and local runs.
 
 ## Environment variables
 
@@ -84,6 +86,10 @@ for Windows Command Prompt syntax and `.env` guidance.
 From the repository root, build all six samples with the commands for your
 shell. In VS Code on any operating system, you can instead run the
 **Build and test all samples** task.
+
+> **Dev container and Codespaces:** The initial container setup already runs
+> these builds. Run them again only after changing code or when you want to
+> verify the workspace; use the VS Code task when you also want to run tests.
 
 ### Linux, macOS, dev container, or Codespaces (Bash/Zsh)
 
