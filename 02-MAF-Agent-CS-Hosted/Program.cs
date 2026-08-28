@@ -16,7 +16,12 @@ if (!Uri.TryCreate(projectEndpointValue, UriKind.Absolute, out var projectEndpoi
 }
 var deployment = Environment.GetEnvironmentVariable("AZURE_AI_MODEL_DEPLOYMENT_NAME") ?? "gpt-5-mini";
 
-AIAgent agent = new AIProjectClient(projectEndpoint, new DefaultAzureCredential())
+var credential = new ChainedTokenCredential(
+    new AzureCliCredential(),
+    new AzureDeveloperCliCredential(),
+    new ManagedIdentityCredential(ManagedIdentityId.SystemAssigned));
+
+AIAgent agent = new AIProjectClient(projectEndpoint, credential)
     .AsAIAgent(
         model: deployment,
         instructions: "You are a friendly assistant. Keep your answers brief.",

@@ -127,10 +127,10 @@ dotnet run --project ./01-MAF-Agent-CS/01-MAF-Agent-CS.csproj
 
 ### Hosted agent sessions (Bash/Zsh)
 
-Run these examples separately. In the first terminal, start the selected host.
-Wait for its listening/ready message. In a second terminal, invoke it with a
-fresh local session; later invocations without `--new-session` reuse that
-session.
+Run these examples separately from the selected sample folder. The launch
+command starts the host on port `8088` and opens Agent Inspector on port `8087`.
+Use the Inspector to chat with the agent, or invoke it from a second terminal.
+Later CLI invocations without `--new-session` reuse the current session.
 
 #### C# (Responses protocol)
 
@@ -138,20 +138,26 @@ First terminal:
 
 ```bash
 cd ./02-MAF-Agent-CS-Hosted
-azd ai agent run maf-agent-cs-02 --no-client
+azd ai agent run
 ```
 
 Second terminal:
 
 ```bash
 cd ./02-MAF-Agent-CS-Hosted
-azd ai agent invoke maf-agent-cs-02 --local --new-session "Hello from C#!"
+azd ai agent invoke maf-agent-cs-02 --local --new-session --protocol responses "Hello from C#!"
 ```
 
 The startup process is a web server, so logs ending with `Now listening on:
-http://[::]:8088` mean it is working and waiting for the invocation. If startup
-reports an invalid project endpoint, set `FOUNDRY_PROJECT_ENDPOINT` to the full
-Foundry Project URL, including `/api/projects/<project>`.
+http://[::]:8088` mean it is working and waiting for the invocation. With
+`azure.ai.agents` 1.0.0-beta.13, `azd` may then probe the Invocations-only route
+`/invocations/docs/openapi.json` and log a non-fatal `404`; the C# sample uses
+Responses, so wait for `Agent ready` and invoke it with `--protocol responses`
+as shown above. If startup reports an invalid project endpoint, set
+`FOUNDRY_PROJECT_ENDPOINT` to the full Foundry Project URL, including
+`/api/projects/<project>`. Local C# authentication prefers the identity from
+`az login`, falls back to `azd auth login`, and uses managed identity when
+deployed.
 
 #### Go (Invocations protocol)
 
@@ -159,7 +165,7 @@ First terminal:
 
 ```bash
 cd ./04-MAF-Agent-GO-Hosted
-azd ai agent run maf-agent-go-04 --no-client
+azd ai agent run
 ```
 
 Second terminal:
@@ -175,7 +181,7 @@ First terminal:
 
 ```bash
 cd ./06-Foundry-Agent-CPP-Hosted
-azd ai agent run maf-agent-cpp-06 --no-client
+azd ai agent run
 ```
 
 Second terminal:
@@ -195,14 +201,14 @@ Push-Location ./03-MAF-Agent-GO; go run .; Pop-Location
 
 ### Hosted agent sessions (PowerShell)
 
-Use two terminals as described above. Start one host in the first terminal and
-invoke it from the second.
+Run the host command from the sample folder. It opens Agent Inspector on port
+`8087`; the CLI invocation in a second terminal is optional.
 
 | Language | First terminal: start host | Second terminal: start a fresh session |
 |---|---|---|
-| C# | `Set-Location ./02-MAF-Agent-CS-Hosted; azd ai agent run maf-agent-cs-02 --no-client` | `Set-Location ./02-MAF-Agent-CS-Hosted; azd ai agent invoke maf-agent-cs-02 --local --new-session "Hello from C#!"` |
-| Go | `Set-Location ./04-MAF-Agent-GO-Hosted; azd ai agent run maf-agent-go-04 --no-client` | `Set-Location ./04-MAF-Agent-GO-Hosted; azd ai agent invoke maf-agent-go-04 --local --new-session --protocol invocations "Hello from Go!"` |
-| C++ | `Set-Location ./06-Foundry-Agent-CPP-Hosted; azd ai agent run maf-agent-cpp-06 --no-client` | `Set-Location ./06-Foundry-Agent-CPP-Hosted; azd ai agent invoke maf-agent-cpp-06 --local --new-session --protocol invocations "Hello from C++!"` |
+| C# | `Set-Location ./02-MAF-Agent-CS-Hosted; azd ai agent run` | `Set-Location ./02-MAF-Agent-CS-Hosted; azd ai agent invoke --local --new-session --protocol responses "Hello from C#!"` |
+| Go | `Set-Location ./04-MAF-Agent-GO-Hosted; azd ai agent run` | `Set-Location ./04-MAF-Agent-GO-Hosted; azd ai agent invoke --local --new-session --protocol invocations "Hello from Go!"` |
+| C++ | `Set-Location ./06-Foundry-Agent-CPP-Hosted; azd ai agent run` | `Set-Location ./06-Foundry-Agent-CPP-Hosted; azd ai agent invoke --local --new-session --protocol invocations "Hello from C++!"` |
 
 See the READMEs for [`03-MAF-Agent-GO`](03-MAF-Agent-GO/README.md),
 [`04-MAF-Agent-GO-Hosted`](04-MAF-Agent-GO-Hosted/README.md),
