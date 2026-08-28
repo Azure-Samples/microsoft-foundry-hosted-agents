@@ -181,8 +181,12 @@ First terminal:
 
 ```bash
 cd ./06-Foundry-Agent-CPP-Hosted
-azd ai agent run
+azd ai agent run --start-command "./build/debug/maf_agent_cpp_06"
 ```
+
+`azd` cannot auto-detect CMake projects, so the C++ command specifies the
+already-built executable. If it does not exist, run the C++ build commands from
+the [Build](#build) section first.
 
 Second terminal:
 
@@ -208,7 +212,7 @@ Run the host command from the sample folder. It opens Agent Inspector on port
 |---|---|---|
 | C# | `Set-Location ./02-MAF-Agent-CS-Hosted; azd ai agent run` | `Set-Location ./02-MAF-Agent-CS-Hosted; azd ai agent invoke --local --new-session --protocol responses "Hello from C#!"` |
 | Go | `Set-Location ./04-MAF-Agent-GO-Hosted; azd ai agent run` | `Set-Location ./04-MAF-Agent-GO-Hosted; azd ai agent invoke --local --new-session --protocol invocations "Hello from Go!"` |
-| C++ | `Set-Location ./06-Foundry-Agent-CPP-Hosted; azd ai agent run` | `Set-Location ./06-Foundry-Agent-CPP-Hosted; azd ai agent invoke --local --new-session --protocol invocations "Hello from C++!"` |
+| C++ | `Set-Location ./06-Foundry-Agent-CPP-Hosted; azd ai agent run --start-command ".\build\debug\maf_agent_cpp_06.exe"` | `Set-Location ./06-Foundry-Agent-CPP-Hosted; azd ai agent invoke --local --new-session --protocol invocations "Hello from C++!"` |
 
 See the READMEs for [`03-MAF-Agent-GO`](03-MAF-Agent-GO/README.md),
 [`04-MAF-Agent-GO-Hosted`](04-MAF-Agent-GO-Hosted/README.md),
