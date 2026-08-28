@@ -114,8 +114,8 @@ Push-Location ./06-Foundry-Agent-CPP-Hosted; cmake --preset debug; cmake --build
 ## Run
 
 Set the environment variables first, then run one sample at a time from the
-repository root. Samples `02`, `04`, and `06` are servers and continue running
-until you press <kbd>Ctrl</kbd>+<kbd>C</kbd>.
+repository root. The hosted samples are servers and continue running until you
+press <kbd>Ctrl</kbd>+<kbd>C</kbd>; invoke each one from a second terminal.
 
 ### Linux, macOS, dev container, or Codespaces (Bash/Zsh)
 
@@ -125,12 +125,64 @@ dotnet run --project ./01-MAF-Agent-CS/01-MAF-Agent-CS.csproj
 ./05-Foundry-Agent-CPP/build/debug/maf_agent_cpp_05
 ```
 
-Hosted samples:
+### Hosted agent sessions (Bash/Zsh)
+
+Run these examples separately. In the first terminal, start the selected host.
+Wait for its listening/ready message. In a second terminal, invoke it with a
+fresh local session; later invocations without `--new-session` reuse that
+session.
+
+#### C# (Responses protocol)
+
+First terminal:
 
 ```bash
-dotnet run --project ./02-MAF-Agent-CS-Hosted/02-MAF-Agent-CS-Hosted.csproj
-(cd ./04-MAF-Agent-GO-Hosted && go run .)
-./06-Foundry-Agent-CPP-Hosted/build/debug/maf_agent_cpp_06
+cd ./02-MAF-Agent-CS-Hosted
+azd ai agent run maf-agent-cs-02 --no-client
+```
+
+Second terminal:
+
+```bash
+cd ./02-MAF-Agent-CS-Hosted
+azd ai agent invoke maf-agent-cs-02 --local --new-session "Hello from C#!"
+```
+
+The startup process is a web server, so logs ending with `Now listening on:
+http://[::]:8088` mean it is working and waiting for the invocation. If startup
+reports an invalid project endpoint, set `FOUNDRY_PROJECT_ENDPOINT` to the full
+Foundry Project URL, including `/api/projects/<project>`.
+
+#### Go (Invocations protocol)
+
+First terminal:
+
+```bash
+cd ./04-MAF-Agent-GO-Hosted
+azd ai agent run maf-agent-go-04 --no-client
+```
+
+Second terminal:
+
+```bash
+cd ./04-MAF-Agent-GO-Hosted
+azd ai agent invoke maf-agent-go-04 --local --new-session --protocol invocations "Hello from Go!"
+```
+
+#### C++ (Invocations protocol)
+
+First terminal:
+
+```bash
+cd ./06-Foundry-Agent-CPP-Hosted
+azd ai agent run maf-agent-cpp-06 --no-client
+```
+
+Second terminal:
+
+```bash
+cd ./06-Foundry-Agent-CPP-Hosted
+azd ai agent invoke maf-agent-cpp-06 --local --new-session --protocol invocations "Hello from C++!"
 ```
 
 ### Windows (PowerShell)
@@ -141,13 +193,16 @@ Push-Location ./03-MAF-Agent-GO; go run .; Pop-Location
 ./05-Foundry-Agent-CPP/build/debug/maf_agent_cpp_05.exe
 ```
 
-Hosted samples:
+### Hosted agent sessions (PowerShell)
 
-```powershell
-dotnet run --project ./02-MAF-Agent-CS-Hosted/02-MAF-Agent-CS-Hosted.csproj
-Push-Location ./04-MAF-Agent-GO-Hosted; go run .; Pop-Location
-./06-Foundry-Agent-CPP-Hosted/build/debug/maf_agent_cpp_06.exe
-```
+Use two terminals as described above. Start one host in the first terminal and
+invoke it from the second.
+
+| Language | First terminal: start host | Second terminal: start a fresh session |
+|---|---|---|
+| C# | `Set-Location ./02-MAF-Agent-CS-Hosted; azd ai agent run maf-agent-cs-02 --no-client` | `Set-Location ./02-MAF-Agent-CS-Hosted; azd ai agent invoke maf-agent-cs-02 --local --new-session "Hello from C#!"` |
+| Go | `Set-Location ./04-MAF-Agent-GO-Hosted; azd ai agent run maf-agent-go-04 --no-client` | `Set-Location ./04-MAF-Agent-GO-Hosted; azd ai agent invoke maf-agent-go-04 --local --new-session --protocol invocations "Hello from Go!"` |
+| C++ | `Set-Location ./06-Foundry-Agent-CPP-Hosted; azd ai agent run maf-agent-cpp-06 --no-client` | `Set-Location ./06-Foundry-Agent-CPP-Hosted; azd ai agent invoke maf-agent-cpp-06 --local --new-session --protocol invocations "Hello from C++!"` |
 
 See the READMEs for [`03-MAF-Agent-GO`](03-MAF-Agent-GO/README.md),
 [`04-MAF-Agent-GO-Hosted`](04-MAF-Agent-GO-Hosted/README.md),
