@@ -13,7 +13,19 @@ Microsoft does not currently provide a Foundry agent SDK for C++. This sample us
 - Azure CLI signed in with `az login`, or another `DefaultAzureCredential` source
 - A Foundry Project with a deployed model
 
+See the repository's [prerequisites and local setup guide](../docs/prerequisites.md)
+for dev-container and operating-system-specific setup.
+
 ## Configure
+
+Linux/macOS (Bash/Zsh):
+
+```bash
+export FOUNDRY_PROJECT_ENDPOINT="https://<resource>.services.ai.azure.com/api/projects/<project>"
+export AZURE_AI_MODEL_DEPLOYMENT_NAME="gpt-5-mini"
+```
+
+Windows (PowerShell):
 
 ```powershell
 $env:FOUNDRY_PROJECT_ENDPOINT = "https://<resource>.services.ai.azure.com/api/projects/<project>"
@@ -26,7 +38,7 @@ The model deployment variable is optional and defaults to `gpt-5-mini`. The proj
 
 From this directory:
 
-```powershell
+```bash
 cmake --preset debug
 cmake --build --preset debug
 ctest --preset debug

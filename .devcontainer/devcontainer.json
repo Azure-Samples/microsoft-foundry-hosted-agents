@@ -50,7 +50,8 @@
   "postCreateCommand": {
     "dotnet": "dotnet restore MAF-Agents-Samples.slnx",
     "go-03": "cd 03-MAF-Agent-GO && go mod download",
-    "go-04": "cd 04-MAF-Agent-GO-Hosted && go mod download"
+    "go-04": "cd 04-MAF-Agent-GO-Hosted && go mod download",
+    "cpp": "bash .devcontainer/restore-cpp-dependencies.sh"
   },
   "customizations": {
     "vscode": {

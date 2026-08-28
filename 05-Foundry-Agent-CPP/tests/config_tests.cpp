@@ -16,17 +16,17 @@ TEST_CASE("Config normalizes a trailing slash")
 TEST_CASE("Config rejects an insecure endpoint")
 {
     REQUIRE_THROWS_AS(
-        foundry_agent::Config{
+        (foundry_agent::Config{
             "http://example.services.ai.azure.com/api/projects/sample",
-            "gpt-5-mini"},
+            "gpt-5-mini"}),
         foundry_agent::ConfigError);
 }
 
 TEST_CASE("Config requires a project path")
 {
     REQUIRE_THROWS_AS(
-        foundry_agent::Config{
+        (foundry_agent::Config{
             "https://example.services.ai.azure.com",
-            "gpt-5-mini"},
+            "gpt-5-mini"}),
         foundry_agent::ConfigError);
 }

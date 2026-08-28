@@ -19,17 +19,28 @@ See the [C++ research report](../docs/research/cpp-agents-with-microsoft-foundry
 - Docker for local container builds
 - Azure Developer CLI (`azd`) and the Foundry agent extensions for deployment
 
+See the repository's [prerequisites and local setup guide](../docs/prerequisites.md)
+for dev-container and operating-system-specific setup.
+
 ## Build and test locally
 
 From this directory:
 
-```powershell
+```bash
 cmake --preset debug
 cmake --build --preset debug
 ctest --preset debug
 ```
 
-Run the server:
+Run the server on Linux/macOS:
+
+```bash
+export FOUNDRY_PROJECT_ENDPOINT="https://<resource>.services.ai.azure.com/api/projects/<project>"
+export AZURE_AI_MODEL_DEPLOYMENT_NAME="gpt-5-mini"
+./build/debug/maf_agent_cpp_06
+```
+
+On Windows:
 
 ```powershell
 $env:FOUNDRY_PROJECT_ENDPOINT = "https://<resource>.services.ai.azure.com/api/projects/<project>"
@@ -37,13 +48,16 @@ $env:AZURE_AI_MODEL_DEPLOYMENT_NAME = "gpt-5-mini"
 .\build\debug\maf_agent_cpp_06.exe
 ```
 
-On Linux:
+Check readiness and invoke it from Linux/macOS:
 
 ```bash
-./build/debug/maf_agent_cpp_06
+curl --fail http://localhost:8088/readiness
+curl --fail-with-body http://localhost:8088/invocations \
+  --header "Content-Type: text/plain" \
+  --data "Hello!"
 ```
 
-Check readiness and invoke it:
+PowerShell:
 
 ```powershell
 Invoke-RestMethod http://localhost:8088/readiness

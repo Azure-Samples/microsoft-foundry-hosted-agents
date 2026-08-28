@@ -28,9 +28,20 @@ The plain-text path is a compatibility layer over Invocations; it is not an impl
 - The `azure.ai.agents` and `azure.ai.projects` azd extensions
 - An Azure account that can create or use a Microsoft Foundry project
 
+See the repository's [prerequisites and local setup guide](../docs/prerequisites.md)
+for dev-container and operating-system-specific setup.
+
 ## Run locally
 
 Set the project endpoint and model deployment:
+
+```bash
+export FOUNDRY_PROJECT_ENDPOINT="https://<resource>.services.ai.azure.com/api/projects/<project>"
+export AZURE_AI_MODEL_DEPLOYMENT_NAME="<model-deployment-name>"
+go run .
+```
+
+PowerShell:
 
 ```powershell
 $env:FOUNDRY_PROJECT_ENDPOINT = "https://<resource>.services.ai.azure.com/api/projects/<project>"
@@ -42,11 +53,25 @@ The server listens on port `8088` by default. Override it with the `PORT` enviro
 
 Check readiness:
 
+```bash
+curl --fail http://localhost:8088/readiness
+```
+
+PowerShell:
+
 ```powershell
 Invoke-RestMethod http://localhost:8088/readiness
 ```
 
 For a simple text response, post the prompt directly:
+
+```bash
+curl --fail-with-body http://localhost:8088/invocations \
+    --header "Content-Type: text/plain" \
+    --data "Hello!"
+```
+
+PowerShell:
 
 ```powershell
 Invoke-RestMethod `
@@ -56,7 +81,7 @@ Invoke-RestMethod `
     -Body "Hello!"
 ```
 
-To exercise the optional AG-UI interface:
+To exercise the optional AG-UI interface from PowerShell:
 
 ```powershell
 $body = @{
@@ -87,7 +112,7 @@ Invoke-WebRequest `
 
 Foundry Hosted Agents require a Linux AMD64 image:
 
-```powershell
+```bash
 docker build --platform linux/amd64 -t maf-agent-go-04 .
 ```
 
@@ -99,7 +124,7 @@ to a non-root user can prevent the container from reaching `/readiness`.
 
 The manifest enables an Azure remote container build, so deployment does not require a local Docker daemon. Run these commands from this folder:
 
-```powershell
+```bash
 azd provision
 azd deploy
 ```
@@ -111,7 +136,7 @@ In the Foundry playground, use the **Chat** tab for plain-text prompts. Use
 
 For plain-text invocation from the CLI:
 
-```powershell
+```bash
 azd ai agent invoke maf-agent-go-04 "Hello!" --protocol invocations
 ```
 

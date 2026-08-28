@@ -8,18 +8,31 @@ This console sample uses the Microsoft Agent Framework for Go with a Microsoft F
 - Azure CLI signed in with `az login`, or another credential supported by `DefaultAzureCredential`
 - A Microsoft Foundry project endpoint and a deployed chat model
 
+See the repository's [prerequisites and local setup guide](../docs/prerequisites.md)
+for dev-container and operating-system-specific setup.
+
 ## Setup
 
-Copy `.env.example` to a local `.env` file, then set the endpoint and model deployment. Export those values in your shell before running the sample.
+Set the endpoint and model deployment in the terminal that will run the sample.
+The sample does not load `.env` automatically.
+
+Bash/Zsh:
+
+```bash
+export FOUNDRY_PROJECT_ENDPOINT="https://<resource>.services.ai.azure.com/api/projects/<project>"
+export AZURE_AI_MODEL_DEPLOYMENT_NAME="gpt-5-mini"
+```
+
+PowerShell:
 
 ```powershell
-$env:FOUNDRY_PROJECT_ENDPOINT = "https://<your-project-endpoint>"
+$env:FOUNDRY_PROJECT_ENDPOINT = "https://<resource>.services.ai.azure.com/api/projects/<project>"
 $env:AZURE_AI_MODEL_DEPLOYMENT_NAME = "gpt-5-mini"
 ```
 
 ## Run
 
-```powershell
+```bash
 go run .
 ```
 

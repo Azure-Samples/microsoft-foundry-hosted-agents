@@ -20,23 +20,13 @@ This repository contains a small set of sample Microsoft Agent Framework (MAF) a
 
 ## Prerequisites
 
-Before running any sample, you need a Microsoft Foundry project with a deployed chat model. If you've never used Microsoft Foundry before:
+See [Prerequisites and local setup](docs/prerequisites.md) for:
 
-1. **Create a Microsoft Foundry resource and project.** In the [Microsoft Foundry portal](https://ai.azure.com), create a new Foundry resource (or use an existing one) and a project inside it. This gives you a **project endpoint** that looks like `https://<resource-name>.services.ai.azure.com/api/projects/<project-name>`.
-2. **Deploy a chat model in that project**, for example `gpt-5-mini`. All samples in this repo default to `gpt-5-mini`, so deploying a model with that exact name lets you run every sample without changing any code. Note the **deployment name** you chose — it may differ from the underlying model name.
-3. **Sign in with the Azure CLI** so the samples can authenticate: `az login`. The samples use `DefaultAzureCredential`/`AzureCliCredential`, so being signed in locally is enough — no API keys are needed.
-
-Once you have those two values — the **project endpoint** and the **model deployment name** — you can run any sample in this repo.
-
-Tooling prerequisites:
-
-- .NET 10 SDK (for `01-MAF-Agent-CS` and `02-MAF-Agent-CS-Hosted`)
-- Go 1.26 SDK (for `03-MAF-Agent-GO` and `04-MAF-Agent-GO-Hosted`)
-- CMake 3.25 or later, Ninja, a C++20 compiler, and vcpkg (for `05-Foundry-Agent-CPP` and `06-Foundry-Agent-CPP-Hosted`)
-- Azure CLI, signed in (`az login`)
-- Docker (or another OCI-compatible builder) and Azure Developer CLI (`azd`), only if you plan to deploy `04-MAF-Agent-GO-Hosted` as a container — see its own README
-- Docker and `azd` are also required to deploy `06-Foundry-Agent-CPP-Hosted`
-- An Azure account with permission to create or use a Microsoft Foundry project
+- the ready-to-use dev container and Codespaces setup;
+- manual setup on Linux, macOS, and Windows;
+- required Microsoft Foundry resources and Azure authentication;
+- Bash, Zsh, PowerShell, and Command Prompt environment-variable syntax; and
+- troubleshooting for common shell, credential, model, and vcpkg errors.
 
 > **Note on preview packages:** The C# samples reference preview/beta NuGet packages (`Azure.AI.Projects`, `Microsoft.Agents.AI.Foundry`, `Microsoft.Agents.AI.Foundry.Hosting`). These SDKs are under active development and their APIs may change between versions. If a sample fails to build after `dotnet restore`, check whether a newer preview package version changed an API used in `Program.cs`.
 
@@ -56,10 +46,12 @@ then run **Dev Containers: Reopen in Container** from the VS Code command
 palette. GitHub Codespaces automatically uses the same configuration.
 
 After the container opens, run the **Build and test all samples** task. The
-first C++ configuration can take several minutes while vcpkg builds
-dependencies; persistent cache volumes make subsequent rebuilds faster. The
-default configuration does not mount a Docker socket or require Microsoft
-Foundry credentials.
+first container creation can take several minutes while vcpkg builds C++
+dependencies. The container configures both C++ samples automatically, and
+persistent cache volumes make subsequent rebuilds and recreated containers
+faster. The default configuration does not mount a Docker socket. Docker is
+unnecessary for source builds and local runs. Run `az login` inside the
+container only when you want to make live Microsoft Foundry calls.
 
 ## Environment variables
 
@@ -68,85 +60,120 @@ All samples use the same two environment variable names:
 - `FOUNDRY_PROJECT_ENDPOINT` — your Foundry project endpoint from the prerequisites step above.
 - `AZURE_AI_MODEL_DEPLOYMENT_NAME` — the model deployment name in that project (defaults to `gpt-5-mini` in every sample if unset).
 
+Use syntax for your current shell. The dev container and Codespaces open Bash
+by default:
+
+```bash
+export FOUNDRY_PROJECT_ENDPOINT="https://<resource>.services.ai.azure.com/api/projects/<project>"
+export AZURE_AI_MODEL_DEPLOYMENT_NAME="gpt-5-mini"
+```
+
 PowerShell:
 
 ```powershell
-$env:FOUNDRY_PROJECT_ENDPOINT = "https://<your-project-endpoint>"
+$env:FOUNDRY_PROJECT_ENDPOINT = "https://<resource>.services.ai.azure.com/api/projects/<project>"
 $env:AZURE_AI_MODEL_DEPLOYMENT_NAME = "gpt-5-mini"
 ```
 
+The variables last only for the current terminal. The samples do not load
+`.env` files automatically. See the [setup guide](docs/prerequisites.md#set-the-environment-variables)
+for Windows Command Prompt syntax and `.env` guidance.
+
 ## Build
 
-```powershell
-dotnet build .\MAF-Agents-Samples.slnx
+From the repository root, build all six samples with the commands for your
+shell. In VS Code on any operating system, you can instead run the
+**Build and test all samples** task.
+
+### Linux, macOS, dev container, or Codespaces (Bash/Zsh)
+
+```bash
+dotnet build ./MAF-Agents-Samples.slnx
+(cd ./03-MAF-Agent-GO && go build ./...)
+(cd ./04-MAF-Agent-GO-Hosted && go build ./...)
+(cd ./05-Foundry-Agent-CPP && cmake --preset debug && cmake --build --preset debug)
+(cd ./06-Foundry-Agent-CPP-Hosted && cmake --preset debug && cmake --build --preset debug)
 ```
 
-Build the C++ samples:
+### Windows (PowerShell)
 
 ```powershell
-Set-Location .\05-Foundry-Agent-CPP
-cmake --preset debug
-cmake --build --preset debug
-Set-Location ..\06-Foundry-Agent-CPP-Hosted
-cmake --preset debug
-cmake --build --preset debug
+dotnet build ./MAF-Agents-Samples.slnx
+Push-Location ./03-MAF-Agent-GO; go build ./...; Pop-Location
+Push-Location ./04-MAF-Agent-GO-Hosted; go build ./...; Pop-Location
+Push-Location ./05-Foundry-Agent-CPP; cmake --preset debug; cmake --build --preset debug; Pop-Location
+Push-Location ./06-Foundry-Agent-CPP-Hosted; cmake --preset debug; cmake --build --preset debug; Pop-Location
 ```
 
 ## Run
 
-Run the C# console sample:
+Set the environment variables first, then run one sample at a time from the
+repository root. Samples `02`, `04`, and `06` are servers and continue running
+until you press <kbd>Ctrl</kbd>+<kbd>C</kbd>.
 
-```powershell
-dotnet run --project .\01-MAF-Agent-CS\01-MAF-Agent-CS.csproj
+### Linux, macOS, dev container, or Codespaces (Bash/Zsh)
+
+```bash
+dotnet run --project ./01-MAF-Agent-CS/01-MAF-Agent-CS.csproj
+(cd ./03-MAF-Agent-GO && go run .)
+./05-Foundry-Agent-CPP/build/debug/maf_agent_cpp_05
 ```
 
-Run the C# hosted agent sample:
+Hosted samples:
 
-```powershell
-dotnet run --project .\02-MAF-Agent-CS-Hosted\02-MAF-Agent-CS-Hosted.csproj
+```bash
+dotnet run --project ./02-MAF-Agent-CS-Hosted/02-MAF-Agent-CS-Hosted.csproj
+(cd ./04-MAF-Agent-GO-Hosted && go run .)
+./06-Foundry-Agent-CPP-Hosted/build/debug/maf_agent_cpp_06
 ```
 
-Run the Go console sample — see [`03-MAF-Agent-GO/README.md`](03-MAF-Agent-GO/README.md) for full details:
+### Windows (PowerShell)
 
 ```powershell
-go run .\03-MAF-Agent-GO
+dotnet run --project ./01-MAF-Agent-CS/01-MAF-Agent-CS.csproj
+Push-Location ./03-MAF-Agent-GO; go run .; Pop-Location
+./05-Foundry-Agent-CPP/build/debug/maf_agent_cpp_05.exe
 ```
 
-Run the Go hosted agent sample — see [`04-MAF-Agent-GO-Hosted/README.md`](04-MAF-Agent-GO-Hosted/README.md) for local invocation and Foundry deployment instructions:
+Hosted samples:
 
 ```powershell
-Set-Location .\04-MAF-Agent-GO-Hosted
-go run .
+dotnet run --project ./02-MAF-Agent-CS-Hosted/02-MAF-Agent-CS-Hosted.csproj
+Push-Location ./04-MAF-Agent-GO-Hosted; go run .; Pop-Location
+./06-Foundry-Agent-CPP-Hosted/build/debug/maf_agent_cpp_06.exe
 ```
 
-Run the C++ samples after building:
-
-```powershell
-.\05-Foundry-Agent-CPP\build\debug\maf_agent_cpp_05.exe
-.\06-Foundry-Agent-CPP-Hosted\build\debug\maf_agent_cpp_06.exe
-```
-
-See [`05-Foundry-Agent-CPP/README.md`](05-Foundry-Agent-CPP/README.md) and [`06-Foundry-Agent-CPP-Hosted/README.md`](06-Foundry-Agent-CPP-Hosted/README.md) for configuration, Linux commands, local invocation, and deployment.
+See the READMEs for [`03-MAF-Agent-GO`](03-MAF-Agent-GO/README.md),
+[`04-MAF-Agent-GO-Hosted`](04-MAF-Agent-GO-Hosted/README.md),
+[`05-Foundry-Agent-CPP`](05-Foundry-Agent-CPP/README.md), and
+[`06-Foundry-Agent-CPP-Hosted`](06-Foundry-Agent-CPP-Hosted/README.md) for
+sample-specific details and hosted endpoint examples.
 
 ## Test
 
-`04-MAF-Agent-GO-Hosted` includes unit tests for its HTTP handlers. Run them with:
+Run all available tests from the repository root.
 
-```powershell
-Set-Location .\04-MAF-Agent-GO-Hosted
-go test ./...
+Bash/Zsh:
+
+```bash
+(cd ./03-MAF-Agent-GO && go test ./...)
+(cd ./04-MAF-Agent-GO-Hosted && go test ./...)
+(cd ./05-Foundry-Agent-CPP && ctest --preset debug)
+(cd ./06-Foundry-Agent-CPP-Hosted && ctest --preset debug)
 ```
 
-The C++ samples use Catch2 tests that do not require Azure credentials:
+PowerShell:
 
 ```powershell
-Set-Location .\05-Foundry-Agent-CPP
-ctest --preset debug
-Set-Location ..\06-Foundry-Agent-CPP-Hosted
-ctest --preset debug
+Push-Location ./03-MAF-Agent-GO; go test ./...; Pop-Location
+Push-Location ./04-MAF-Agent-GO-Hosted; go test ./...; Pop-Location
+Push-Location ./05-Foundry-Agent-CPP; ctest --preset debug; Pop-Location
+Push-Location ./06-Foundry-Agent-CPP-Hosted; ctest --preset debug; Pop-Location
 ```
 
-The two C# samples do not currently have automated tests; they are intended as minimal, readable starting points.
+The C++ tests inject credentials and HTTP transports, so they do not require
+Azure access. The C# samples do not currently have automated tests; they are
+intended as minimal, readable starting points.
 
 ## Continuous integration
 
