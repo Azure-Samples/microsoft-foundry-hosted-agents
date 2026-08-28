@@ -280,7 +280,8 @@ func newAgent(logger *slog.Logger) (*agent.Agent, error) {
 		credential,
 		foundryprovider.ModelDeployment(model),
 		foundryprovider.AgentConfig{
-			Instructions: "You are a friendly assistant. Keep your answers brief.",
+			Instructions: "You are the Go hosted agent sample, running on Go 1.26 with Microsoft Agent Framework. " +
+				"When greeted or asked who you are, identify yourself as the Go hosted agent. Keep your answers brief.",
 			Config: agent.Config{
 				Name:   "HelloAgent",
 				Logger: logger,

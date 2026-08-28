@@ -22,6 +22,21 @@ C++) and two hosting styles (console app vs. hosted agent). There is no
 shared runtime code between samples — each folder is self-contained with its
 own dependency manifest, build system, and README.
 
+## Documentation placement
+
+At the repository root, `README.md` and `LICENSE` are the only documentation
+files. All other documentation must be placed under `docs/` or inside the
+relevant sample folder.
+
+- Research reports and design notes belong under `docs/research/`.
+- Per-sample documentation belongs inside that sample's folder, typically as
+  its `README.md` or as a named Markdown file alongside the sample source.
+- Do not create general documentation files at the repository root.
+- `AGENTS.md` is an operational instruction file consumed by AI tooling, not
+  a documentation file, and must remain at the repository root.
+- Dotfiles, hidden tooling directories, build manifests, and other
+  non-documentation artifacts are exempt and follow their tooling conventions.
+
 ## Foundry agent work
 
 This project was built with the `microsoft-foundry` skill. Before working on

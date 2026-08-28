@@ -1,0 +1,5 @@
+* text=auto eol=lf
+
+# Keep Windows command scripts native when added in the future.
+*.bat text eol=crlf
+*.cmd text eol=crlf

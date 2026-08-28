@@ -1,0 +1,73 @@
+{
+  "name": "Microsoft Foundry Hosted Agents",
+  "image": "mcr.microsoft.com/devcontainers/cpp:3-noble",
+  "features": {
+    "ghcr.io/devcontainers/features/dotnet:2": {
+      "version": "10.0"
+    },
+    "ghcr.io/devcontainers/features/go:1": {
+      "version": "1.26"
+    },
+    "ghcr.io/devcontainers/features/azure-cli:1": {},
+    "ghcr.io/azure/azure-dev/azd:0": {
+      "version": "stable"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "containerEnv": {
+    "VCPKG_ROOT": "/usr/local/vcpkg",
+    "VCPKG_DOWNLOADS": "/usr/local/vcpkg-downloads",
+    "VCPKG_BINARY_SOURCES": "clear;files,/home/vscode/.cache/vcpkg/archives,readwrite"
+  },
+  "mounts": [
+    {
+      "source": "foundry-agents-${localWorkspaceFolderBasename}-nuget",
+      "target": "/home/vscode/.nuget/packages",
+      "type": "volume"
+    },
+    {
+      "source": "foundry-agents-${localWorkspaceFolderBasename}-go-modules",
+      "target": "/go/pkg/mod",
+      "type": "volume"
+    },
+    {
+      "source": "foundry-agents-${localWorkspaceFolderBasename}-go-build",
+      "target": "/home/vscode/.cache/go-build",
+      "type": "volume"
+    },
+    {
+      "source": "foundry-agents-${localWorkspaceFolderBasename}-vcpkg-downloads",
+      "target": "/usr/local/vcpkg-downloads",
+      "type": "volume"
+    },
+    {
+      "source": "foundry-agents-${localWorkspaceFolderBasename}-vcpkg-binaries",
+      "target": "/home/vscode/.cache/vcpkg/archives",
+      "type": "volume"
+    }
+  ],
+  "onCreateCommand": "sudo bash .devcontainer/initialize-cache-volumes.sh",
+  "postCreateCommand": {
+    "dotnet": "dotnet build MAF-Agents-Samples.slnx",
+    "go-03": "cd 03-MAF-Agent-GO && go build ./...",
+    "go-04": "cd 04-MAF-Agent-GO-Hosted && go build ./...",
+    "cpp": "bash .devcontainer/build-cpp-samples.sh"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csdevkit",
+        "golang.Go",
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools"
+      ],
+      "settings": {
+        "cmake.configureOnOpen": false,
+        "dotnet.defaultSolution": "MAF-Agents-Samples.slnx",
+        "go.gopath": "/go",
+        "go.goroot": "/usr/local/go"
+      }
+    }
+  },
+  "remoteUser": "vscode"
+}
