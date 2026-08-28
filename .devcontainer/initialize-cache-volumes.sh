@@ -8,7 +8,7 @@ mkdir -p "/home/${user_name}/.nuget/packages"
 chown -R "${user_name}:${user_name}" "/home/${user_name}/.nuget"
 
 mkdir -p /go/pkg/mod
-chown -R "${user_name}:golang" /go/pkg
+chown -R "${user_name}:${user_name}" /go/pkg/mod
 
 mkdir -p "/home/${user_name}/.cache/go-build"
 chown -R "${user_name}:${user_name}" "/home/${user_name}/.cache/go-build"

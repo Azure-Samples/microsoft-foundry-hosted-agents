@@ -1,3 +1,4 @@
 {
-    "dotnet.defaultSolution": "MAF-Agents-Samples.slnx"
+    "dotnet.defaultSolution": "MAF-Agents-Samples.slnx",
+    "files.eol": "\n"
 }
