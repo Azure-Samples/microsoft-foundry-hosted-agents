@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        module: [MAF-Agent-GO-03, MAF-Agent-GO-04]
+        module: [03-MAF-Agent-GO, 04-MAF-Agent-GO-Hosted]
     steps:
       - uses: actions/checkout@v4
 
@@ -42,3 +42,39 @@ jobs:
       - name: Test
         working-directory: ${{ matrix.module }}
         run: go test ./...
+
+  cpp-build:
+    name: Build and test C++ samples
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        module: [05-Foundry-Agent-CPP, 06-Foundry-Agent-CPP-Hosted]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build tools
+        run: sudo apt-get update && sudo apt-get install -y ninja-build
+
+      - name: Bootstrap vcpkg
+        run: |
+          git clone https://github.com/microsoft/vcpkg "$HOME/vcpkg"
+          "$HOME/vcpkg/bootstrap-vcpkg.sh" -disableMetrics
+          echo "VCPKG_ROOT=$HOME/vcpkg" >> "$GITHUB_ENV"
+
+      - name: Cache vcpkg binaries
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/vcpkg/archives
+          key: ${{ runner.os }}-vcpkg-${{ hashFiles('0[56]-*CPP*/vcpkg.json', '0[56]-*CPP*/vcpkg-configuration.json') }}
+
+      - name: Configure
+        working-directory: ${{ matrix.module }}
+        run: cmake --preset debug
+
+      - name: Build
+        working-directory: ${{ matrix.module }}
+        run: cmake --build --preset debug
+
+      - name: Test
+        working-directory: ${{ matrix.module }}
+        run: ctest --preset debug

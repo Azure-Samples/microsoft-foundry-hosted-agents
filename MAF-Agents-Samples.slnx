@@ -1,4 +1,4 @@
 <Solution>
-  <Project Path="MAF-Agent-CS-01/MAF-Agent-CS-01.csproj" />
-  <Project Path="MAF-Agent-CS-02/MAF-Agent-CS-02.csproj" />
+  <Project Path="01-MAF-Agent-CS/01-MAF-Agent-CS.csproj" />
+  <Project Path="02-MAF-Agent-CS-Hosted/02-MAF-Agent-CS-Hosted.csproj" />
 </Solution>

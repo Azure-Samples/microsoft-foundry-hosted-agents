@@ -439,3 +439,11 @@ vendor/
 .env.*
 !.env.example
 .azure/
+
+# CMake and vcpkg artifacts
+build/
+vcpkg_installed/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CTestTestfile.cmake
