@@ -11,6 +11,8 @@ This repository contains a small set of sample Microsoft Agent Framework (MAF) a
 | `MAF-Agent-GO-03` | Go | Console app | Creates and runs a Microsoft Agent Framework agent backed by a Foundry project, prints one response, then exits. |
 | `MAF-Agent-GO-04` | Go | Hosted agent | A containerized service that exposes Foundry's **Invocations** protocol (including the AG-UI contract) so it can be deployed and called as a Foundry hosted agent. |
 | `MAF-Agents-Samples.slnx` | — | — | Solution file for the two C# projects. |
+| `MAF-Agent-CPP-05` | C++ | Console app | Calls a Foundry Project from C++20 through Microsoft Entra authentication and the project-scoped Responses REST API. |
+| `MAF-Agent-CPP-06` | C++ | Hosted agent | Reuses the C++ client in a Linux container that exposes Foundry's **Invocations** protocol through cpp-httplib. |
 
 **Console app vs. hosted agent, in plain terms:**
 - A **console app** is a simple, one-shot program you run locally with `dotnet run` or `go run`. It calls Foundry once, prints the answer, and exits. Use these first to confirm your Foundry project and model deployment work.
@@ -30,11 +32,15 @@ Tooling prerequisites:
 
 - .NET 10 SDK (for `MAF-Agent-CS-01` and `MAF-Agent-CS-02`)
 - Go 1.26 SDK (for `MAF-Agent-GO-03` and `MAF-Agent-GO-04`)
+- CMake 3.25 or later, Ninja, a C++20 compiler, and vcpkg (for `MAF-Agent-CPP-05` and `MAF-Agent-CPP-06`)
 - Azure CLI, signed in (`az login`)
 - Docker (or another OCI-compatible builder) and Azure Developer CLI (`azd`), only if you plan to deploy `MAF-Agent-GO-04` as a container — see its own README
+- Docker and `azd` are also required to deploy `MAF-Agent-CPP-06`
 - An Azure account with permission to create or use a Microsoft Foundry project
 
 > **Note on preview packages:** The C# samples reference preview/beta NuGet packages (`Azure.AI.Projects`, `Microsoft.Agents.AI.Foundry`, `Microsoft.Agents.AI.Foundry.Hosting`). These SDKs are under active development and their APIs may change between versions. If a sample fails to build after `dotnet restore`, check whether a newer preview package version changed an API used in `Program.cs`.
+
+> **C++ support boundary:** Microsoft Foundry and Microsoft Agent Framework do not currently provide a first-party C++ agent SDK or hosting adapter. The C++ samples use first-party `azure-identity-cpp` for authentication and repository-owned REST and hosting adapters. See [C++ Agents with Microsoft Foundry](docs/research/cpp-agents-with-microsoft-foundry.md) for the full research and trade-off analysis.
 
 ## Environment variables
 
@@ -54,6 +60,17 @@ $env:AZURE_AI_MODEL_DEPLOYMENT_NAME = "gpt-5-mini"
 
 ```powershell
 dotnet build .\MAF-Agents-Samples.slnx
+```
+
+Build the C++ samples:
+
+```powershell
+Set-Location .\MAF-Agent-CPP-05
+cmake --preset debug
+cmake --build --preset debug
+Set-Location ..\MAF-Agent-CPP-06
+cmake --preset debug
+cmake --build --preset debug
 ```
 
 ## Run
@@ -83,6 +100,15 @@ Set-Location .\MAF-Agent-GO-04
 go run .
 ```
 
+Run the C++ samples after building:
+
+```powershell
+.\MAF-Agent-CPP-05\build\debug\maf_agent_cpp_05.exe
+.\MAF-Agent-CPP-06\build\debug\maf_agent_cpp_06.exe
+```
+
+See [`MAF-Agent-CPP-05/README.md`](MAF-Agent-CPP-05/README.md) and [`MAF-Agent-CPP-06/README.md`](MAF-Agent-CPP-06/README.md) for configuration, Linux commands, local invocation, and deployment.
+
 ## Test
 
 `MAF-Agent-GO-04` includes unit tests for its HTTP handlers. Run them with:
@@ -92,11 +118,20 @@ Set-Location .\MAF-Agent-GO-04
 go test ./...
 ```
 
-The other three samples do not currently have automated tests; they are intended as minimal, readable starting points.
+The C++ samples use Catch2 tests that do not require Azure credentials:
+
+```powershell
+Set-Location .\MAF-Agent-CPP-05
+ctest --preset debug
+Set-Location ..\MAF-Agent-CPP-06
+ctest --preset debug
+```
+
+The two C# samples do not currently have automated tests; they are intended as minimal, readable starting points.
 
 ## Continuous integration
 
-A minimal GitHub Actions workflow (`.github/workflows/build.yml`) builds the .NET solution and builds/tests both Go modules on every push and pull request to `main`. It does not require Foundry credentials since it only validates that the code compiles and unit tests pass.
+A minimal GitHub Actions workflow (`.github/workflows/build.yml`) builds the .NET solution and builds/tests the Go and C++ samples on every push and pull request to `main`. It does not require Foundry credentials since it only validates that the code compiles and unit tests pass.
 
 ## Resources
 
@@ -106,6 +141,9 @@ A minimal GitHub Actions workflow (`.github/workflows/build.yml`) builds the .NE
 - [Microsoft Agent Framework GitHub repository](https://github.com/microsoft/agent-framework)
 - [Deploy and host agents in Microsoft Foundry](https://learn.microsoft.com/azure/ai-foundry/agents/how-to/hosted-agents-overview)
 - [Azure Developer CLI (`azd`) documentation](https://learn.microsoft.com/azure/developer/azure-developer-cli/overview)
+- [C++ Agents with Microsoft Foundry: Current Options, Gaps, and Recommended Architecture](docs/research/cpp-agents-with-microsoft-foundry.md)
+- [Azure SDK for C++](https://github.com/Azure/azure-sdk-for-cpp)
+- [vcpkg C++ package manager](https://vcpkg.io)
 
 ## Notes
 
