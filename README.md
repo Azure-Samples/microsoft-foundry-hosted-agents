@@ -42,6 +42,25 @@ Tooling prerequisites:
 
 > **C++ support boundary:** Microsoft Foundry and Microsoft Agent Framework do not currently provide a first-party C++ agent SDK or hosting adapter. The C++ samples use first-party `azure-identity-cpp` for authentication and repository-owned REST and hosting adapters. See [C++ Agents with Microsoft Foundry](docs/research/cpp-agents-with-microsoft-foundry.md) for the full research and trade-off analysis.
 
+## Dev container
+
+The fastest way to prepare all six samples is to open the repository in its
+devcontainer. It provides .NET 10, Go 1.26, C++20, CMake, Ninja, vcpkg, Azure
+CLI, Azure Developer CLI, and GitHub CLI on Ubuntu 24.04.
+
+[![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/Azure-Samples/microsoft-foundry-hosted-agents)
+
+For local use, install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+and the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers),
+then run **Dev Containers: Reopen in Container** from the VS Code command
+palette. GitHub Codespaces automatically uses the same configuration.
+
+After the container opens, run the **Build and test all samples** task. The
+first C++ configuration can take several minutes while vcpkg builds
+dependencies; persistent cache volumes make subsequent rebuilds faster. The
+default configuration does not mount a Docker socket or require Microsoft
+Foundry credentials.
+
 ## Environment variables
 
 All samples use the same two environment variable names:

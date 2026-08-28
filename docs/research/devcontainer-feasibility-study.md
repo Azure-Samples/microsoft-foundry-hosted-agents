@@ -1,5 +1,6 @@
-> **Implementation status:** Feasibility research complete. A devcontainer has
-> not yet been added to the repository.
+> **Implementation status:** Initial root devcontainer implementation added
+> with the required toolchains, persistent dependency caches, and
+> credential-free build/test tasks.
 
 # Polyglot Devcontainer Feasibility Study
 

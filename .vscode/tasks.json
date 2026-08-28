@@ -1,0 +1,126 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": ".NET: Build solution",
+      "type": "shell",
+      "command": "dotnet build MAF-Agents-Samples.slnx --configuration Release",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Go: Build 03",
+      "type": "shell",
+      "command": "go build ./...",
+      "options": {
+        "cwd": "${workspaceFolder}/03-MAF-Agent-GO"
+      },
+      "problemMatcher": "$go"
+    },
+    {
+      "label": "Go: Test 03",
+      "type": "shell",
+      "command": "go test ./...",
+      "dependsOn": "Go: Build 03",
+      "options": {
+        "cwd": "${workspaceFolder}/03-MAF-Agent-GO"
+      },
+      "problemMatcher": "$go"
+    },
+    {
+      "label": "Go: Build 04",
+      "type": "shell",
+      "command": "go build ./...",
+      "options": {
+        "cwd": "${workspaceFolder}/04-MAF-Agent-GO-Hosted"
+      },
+      "problemMatcher": "$go"
+    },
+    {
+      "label": "Go: Test 04",
+      "type": "shell",
+      "command": "go test ./...",
+      "dependsOn": "Go: Build 04",
+      "options": {
+        "cwd": "${workspaceFolder}/04-MAF-Agent-GO-Hosted"
+      },
+      "problemMatcher": "$go"
+    },
+    {
+      "label": "C++: Configure 05",
+      "type": "shell",
+      "command": "cmake --preset debug",
+      "options": {
+        "cwd": "${workspaceFolder}/05-Foundry-Agent-CPP"
+      },
+      "problemMatcher": "$gcc"
+    },
+    {
+      "label": "C++: Build 05",
+      "type": "shell",
+      "command": "cmake --build --preset debug",
+      "dependsOn": "C++: Configure 05",
+      "options": {
+        "cwd": "${workspaceFolder}/05-Foundry-Agent-CPP"
+      },
+      "problemMatcher": "$gcc"
+    },
+    {
+      "label": "C++: Test 05",
+      "type": "shell",
+      "command": "ctest --preset debug",
+      "dependsOn": "C++: Build 05",
+      "options": {
+        "cwd": "${workspaceFolder}/05-Foundry-Agent-CPP"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "C++: Configure 06",
+      "type": "shell",
+      "command": "cmake --preset debug",
+      "options": {
+        "cwd": "${workspaceFolder}/06-Foundry-Agent-CPP-Hosted"
+      },
+      "problemMatcher": "$gcc"
+    },
+    {
+      "label": "C++: Build 06",
+      "type": "shell",
+      "command": "cmake --build --preset debug",
+      "dependsOn": "C++: Configure 06",
+      "options": {
+        "cwd": "${workspaceFolder}/06-Foundry-Agent-CPP-Hosted"
+      },
+      "problemMatcher": "$gcc"
+    },
+    {
+      "label": "C++: Test 06",
+      "type": "shell",
+      "command": "ctest --preset debug",
+      "dependsOn": "C++: Build 06",
+      "options": {
+        "cwd": "${workspaceFolder}/06-Foundry-Agent-CPP-Hosted"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build and test all samples",
+      "dependsOn": [
+        ".NET: Build solution",
+        "Go: Test 03",
+        "Go: Test 04",
+        "C++: Test 05",
+        "C++: Test 06"
+      ],
+      "dependsOrder": "sequence",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}
