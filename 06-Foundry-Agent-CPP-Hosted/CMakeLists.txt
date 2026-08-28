@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(MAF_CPP05_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-add_subdirectory(../MAF-Agent-CPP-05 MAF-Agent-CPP-05)
+add_subdirectory(../05-Foundry-Agent-CPP MAF-Agent-CPP-05)
 
 find_package(httplib CONFIG REQUIRED)
 

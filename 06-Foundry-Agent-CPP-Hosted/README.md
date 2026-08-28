@@ -1,6 +1,6 @@
-# MAF-Agent-CPP-06
+# 06-Foundry-Agent-CPP-Hosted
 
-This sample reuses the client from [`MAF-Agent-CPP-05`](../MAF-Agent-CPP-05/README.md) and hosts it in a C++20 Linux container for Microsoft Foundry Hosted Agents.
+This sample reuses the client from [`05-Foundry-Agent-CPP`](../05-Foundry-Agent-CPP/README.md) and hosts it in a C++20 Linux container for Microsoft Foundry Hosted Agents.
 
 The server binds to `0.0.0.0`, defaults to port `8088`, and implements:
 
@@ -15,7 +15,7 @@ See the [C++ research report](../docs/research/cpp-agents-with-microsoft-foundry
 
 ## Prerequisites
 
-- The local prerequisites from [`MAF-Agent-CPP-05`](../MAF-Agent-CPP-05/README.md)
+- The local prerequisites from [`05-Foundry-Agent-CPP`](../05-Foundry-Agent-CPP/README.md)
 - Docker for local container builds
 - Azure Developer CLI (`azd`) and the Foundry agent extensions for deployment
 
@@ -59,7 +59,7 @@ The Docker build context must be the repository root because the hosted sample c
 
 ```powershell
 docker build --platform linux/amd64 `
-  -f .\MAF-Agent-CPP-06\Dockerfile `
+  -f .\06-Foundry-Agent-CPP-Hosted\Dockerfile `
   -t maf-agent-cpp-06 .
 ```
 

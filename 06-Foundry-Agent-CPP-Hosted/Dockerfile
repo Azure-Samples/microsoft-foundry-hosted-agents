@@ -21,10 +21,10 @@ RUN git clone https://github.com/microsoft/vcpkg /opt/vcpkg \
 ENV VCPKG_ROOT=/opt/vcpkg
 
 WORKDIR /src
-COPY MAF-Agent-CPP-05/ MAF-Agent-CPP-05/
-COPY MAF-Agent-CPP-06/ MAF-Agent-CPP-06/
+COPY 05-Foundry-Agent-CPP/ 05-Foundry-Agent-CPP/
+COPY 06-Foundry-Agent-CPP-Hosted/ 06-Foundry-Agent-CPP-Hosted/
 
-WORKDIR /src/MAF-Agent-CPP-06
+WORKDIR /src/06-Foundry-Agent-CPP-Hosted
 RUN cmake -G Ninja \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake \
@@ -43,7 +43,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* \
     && useradd --create-home --uid 10001 agent
 
-COPY --from=build /src/MAF-Agent-CPP-06/build/release/maf_agent_cpp_06 /app/agent
+COPY --from=build /src/06-Foundry-Agent-CPP-Hosted/build/release/maf_agent_cpp_06 /app/agent
 
 USER agent
 WORKDIR /app

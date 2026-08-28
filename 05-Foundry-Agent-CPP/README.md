@@ -1,4 +1,4 @@
-# MAF-Agent-CPP-05
+# 05-Foundry-Agent-CPP
 
 This C++20 console sample calls a model deployment in a Microsoft Foundry Project, prints one answer, and exits. It mirrors the local C# and Go samples.
 

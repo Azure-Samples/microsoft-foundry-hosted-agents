@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        module: [MAF-Agent-GO-03, MAF-Agent-GO-04]
+        module: [03-MAF-Agent-GO, 04-MAF-Agent-GO-Hosted]
     steps:
       - uses: actions/checkout@v4
 
@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        module: [MAF-Agent-CPP-05, MAF-Agent-CPP-06]
+        module: [05-Foundry-Agent-CPP, 06-Foundry-Agent-CPP-Hosted]
     steps:
       - uses: actions/checkout@v4
 
@@ -65,7 +65,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/vcpkg/archives
-          key: ${{ runner.os }}-vcpkg-${{ hashFiles('MAF-Agent-CPP-*/vcpkg.json', 'MAF-Agent-CPP-*/vcpkg-configuration.json') }}
+          key: ${{ runner.os }}-vcpkg-${{ hashFiles('0[56]-*CPP*/vcpkg.json', '0[56]-*CPP*/vcpkg-configuration.json') }}
 
       - name: Configure
         working-directory: ${{ matrix.module }}

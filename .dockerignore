@@ -5,10 +5,10 @@
 **/build/
 **/bin/
 **/obj/
-MAF-Agent-CS-01/
-MAF-Agent-CS-02/
-MAF-Agent-GO-03/
-MAF-Agent-GO-04/
+01-MAF-Agent-CS/
+02-MAF-Agent-CS-Hosted/
+03-MAF-Agent-GO/
+04-MAF-Agent-GO-Hosted/
 docs/
 *.md
 *.slnx

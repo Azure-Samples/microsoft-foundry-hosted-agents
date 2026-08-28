@@ -1,4 +1,4 @@
-# MAF-Agent-GO-04
+# 04-MAF-Agent-GO-Hosted
 
 This sample hosts a Microsoft Agent Framework Go agent as a containerized Microsoft Foundry Hosted Agent. It exposes `/invocations` for plain-text chat prompts and provides `/readiness` for platform health checks. The same endpoint also supports optional Agent Framework Go AG-UI JSON requests with Server-Sent Events (SSE) responses.
 
