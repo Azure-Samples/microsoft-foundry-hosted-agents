@@ -6,19 +6,21 @@
 #include <stdexcept>
 #include <string>
 
-namespace {
+namespace
+{
 
-class FakeAgent final : public foundry_host::AgentRunner {
-public:
-    std::string Run(const std::string& prompt) override
+    class FakeAgent final : public foundry_host::AgentRunner
     {
-        lastPrompt = prompt;
-        return response;
-    }
+    public:
+        std::string Run(const std::string &prompt) override
+        {
+            lastPrompt = prompt;
+            return response;
+        }
 
-    std::string lastPrompt;
-    std::string response{"assistant response"};
-};
+        std::string lastPrompt;
+        std::string response{"assistant response"};
+    };
 
 } // namespace
 
@@ -30,9 +32,17 @@ TEST_CASE("Invocation parser accepts plain text and JSON strings")
 
 TEST_CASE("Invocation parser recognizes AG-UI and rejects unsupported JSON")
 {
-    REQUIRE(foundry_host::ParseInvocation(
-        R"({"messages":[{"role":"user","content":"hello"}]})").isAgUi);
+    const auto invocation = foundry_host::ParseInvocation(
+        R"({"threadId":"thread-1","runId":"run-1","messages":[{"role":"assistant","content":"How can I help?"},{"role":"user","content":"hello"}]})");
+    REQUIRE(invocation.isAgUi);
+    REQUIRE(invocation.prompt == "hello");
+    REQUIRE(invocation.threadId == "thread-1");
+    REQUIRE(invocation.runId == "run-1");
+
     REQUIRE_THROWS_AS(foundry_host::ParseInvocation(R"({"messages":[]})"),
+                      std::invalid_argument);
+    REQUIRE_THROWS_AS(foundry_host::ParseInvocation(
+                          R"({"threadId":"thread-1","runId":"run-1","messages":[{"role":"assistant","content":"hello"}]})"),
                       std::invalid_argument);
     REQUIRE_THROWS_AS(foundry_host::ParseInvocation(R"({"prompt":"hello"})"),
                       std::invalid_argument);
@@ -51,7 +61,8 @@ TEST_CASE("Port validation honors defaults and valid values")
 
 TEST_CASE("Readiness returns the hosted health contract")
 {
-    foundry_host::Host host{[] { return std::make_shared<FakeAgent>(); }};
+    foundry_host::Host host{[]
+                            { return std::make_shared<FakeAgent>(); }};
     httplib::Request request;
     request.method = "GET";
     httplib::Response response;
@@ -67,10 +78,11 @@ TEST_CASE("Invocation runs through a lazily initialized stateless agent")
 {
     auto agent = std::make_shared<FakeAgent>();
     int factoryCalls = 0;
-    foundry_host::Host host{[&] {
-        ++factoryCalls;
-        return agent;
-    }};
+    foundry_host::Host host{[&]
+                            {
+                                ++factoryCalls;
+                                return agent;
+                            }};
     httplib::Request request;
     request.method = "POST";
     request.body = R"("hello")";
@@ -86,21 +98,43 @@ TEST_CASE("Invocation runs through a lazily initialized stateless agent")
     REQUIRE(factoryCalls == 1);
 }
 
-TEST_CASE("AG-UI objects return not implemented")
+TEST_CASE("AG-UI objects return Inspector-compatible server-sent events")
 {
-    foundry_host::Host host{[] { return std::make_shared<FakeAgent>(); }};
+    auto agent = std::make_shared<FakeAgent>();
+    agent->response = "Hello from C++.";
+    foundry_host::Host host{[agent]
+                            { return agent; }};
     httplib::Request request;
     request.method = "POST";
-    request.body = R"({"messages":[{"role":"user","content":"hello"}]})";
+    request.body = R"({"threadId":"thread-1","runId":"run-1","messages":[{"id":"message-1","role":"user","content":"hello"}]})";
     httplib::Response response;
 
     host.HandleInvocation(request, response);
-    REQUIRE(response.status == 501);
+
+    REQUIRE(response.status == 200);
+    REQUIRE(response.get_header_value("Content-Type") == "text/event-stream");
+    REQUIRE(response.get_header_value("Cache-Control") == "no-cache");
+    REQUIRE(agent->lastPrompt == "hello");
+
+    const auto runStarted = response.body.find(R"("type":"RUN_STARTED")");
+    const auto messageStarted = response.body.find(R"("type":"TEXT_MESSAGE_START")");
+    const auto content = response.body.find(R"("type":"TEXT_MESSAGE_CONTENT")");
+    const auto messageEnded = response.body.find(R"("type":"TEXT_MESSAGE_END")");
+    const auto runFinished = response.body.find(R"("type":"RUN_FINISHED")");
+    REQUIRE(runStarted < messageStarted);
+    REQUIRE(messageStarted < content);
+    REQUIRE(content < messageEnded);
+    REQUIRE(messageEnded < runFinished);
+    REQUIRE(response.body.find(R"("threadId":"thread-1")") != std::string::npos);
+    REQUIRE(response.body.find(R"("runId":"run-1")") != std::string::npos);
+    REQUIRE(response.body.find(R"("delta":"Hello from C++.")") != std::string::npos);
+    REQUIRE(response.body.find(R"("timestamp":)") != std::string::npos);
 }
 
 TEST_CASE("Oversized requests return payload too large")
 {
-    foundry_host::Host host{[] { return std::make_shared<FakeAgent>(); }};
+    foundry_host::Host host{[]
+                            { return std::make_shared<FakeAgent>(); }};
     httplib::Request request;
     request.method = "POST";
     request.body.assign(foundry_host::MaximumRequestSize + 1, 'x');

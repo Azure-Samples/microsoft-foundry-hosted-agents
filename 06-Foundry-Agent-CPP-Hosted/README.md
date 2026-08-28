@@ -7,9 +7,9 @@ The server binds to `0.0.0.0`, defaults to port `8088`, and implements:
 - `GET /readiness`
 - `POST /invocations` using Foundry Invocations protocol `2.0.0`
 - raw UTF-8 and JSON-string prompts
+- AG-UI JSON requests and server-sent event responses for Agent Inspector
 - a 1 MiB request limit
 - stateless requests and lazy agent initialization
-- `501 Not Implemented` for AG-UI objects until streaming is implemented
 
 See the [C++ research report](../docs/research/cpp-agents-with-microsoft-foundry.md) for the rationale behind Invocations and the current C++ capability gaps.
 
@@ -57,6 +57,10 @@ curl --fail-with-body http://localhost:8088/invocations \
   --data "Hello!"
 ```
 
+In Agent Inspector, select **Invocations Protocol** before sending a request.
+The Inspector may initially select Responses because its protocol preference is
+shared across local agents.
+
 PowerShell:
 
 ```powershell
@@ -94,7 +98,7 @@ Deployment and managed-identity behavior must be validated in your own Foundry e
 
 ## Initial limitations
 
-- Plain text responses only; AG-UI streaming is not implemented
+- AG-UI text responses are returned after the complete model response; token-by-token streaming is not implemented
 - No tools or persistent conversation state
 - Repository-owned Foundry client and hosting adapter
 - Linux AMD64 container target

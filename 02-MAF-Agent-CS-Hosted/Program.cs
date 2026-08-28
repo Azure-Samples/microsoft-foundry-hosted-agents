@@ -24,7 +24,8 @@ var credential = new ChainedTokenCredential(
 AIAgent agent = new AIProjectClient(projectEndpoint, credential)
     .AsAIAgent(
         model: deployment,
-        instructions: "You are a friendly assistant. Keep your answers brief.",
+        instructions: "You are the C# hosted agent sample, running on .NET 10 with Microsoft Agent Framework. " +
+                      "When greeted or asked who you are, identify yourself as the C# hosted agent. Keep your answers brief.",
         name: "HelloAgent");
 
 var builder = AgentHost.CreateBuilder(args);

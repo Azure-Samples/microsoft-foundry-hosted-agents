@@ -113,11 +113,11 @@ Push-Location ./06-Foundry-Agent-CPP-Hosted; cmake --preset debug; cmake --build
 
 ## Run
 
-Set the environment variables first, then run one sample at a time from the
-repository root. The hosted samples are servers and continue running until you
-press <kbd>Ctrl</kbd>+<kbd>C</kbd>; invoke each one from a second terminal.
+Set the environment variables first, then run one sample at a time. For
+Inspector usage, second-terminal commands, protocol details, and
+troubleshooting, see [Run the hosted agents locally](docs/run-hosted-agents-locally.md).
 
-### Linux, macOS, dev container, or Codespaces (Bash/Zsh)
+### Console agents
 
 ```bash
 dotnet run --project ./01-MAF-Agent-CS/01-MAF-Agent-CS.csproj
@@ -125,100 +125,35 @@ dotnet run --project ./01-MAF-Agent-CS/01-MAF-Agent-CS.csproj
 ./05-Foundry-Agent-CPP/build/debug/maf_agent_cpp_05
 ```
 
-### Hosted agent sessions (Bash/Zsh)
-
-Run these examples separately from the selected sample folder. The launch
-command starts the host on port `8088` and opens Agent Inspector on port `8087`.
-Use the Inspector to chat with the agent, or invoke it from a second terminal.
-Later CLI invocations without `--new-session` reuse the current session.
-
-#### C# (Responses protocol)
-
-First terminal:
+### C# hosted agent
 
 ```bash
 cd ./02-MAF-Agent-CS-Hosted
 azd ai agent run
 ```
 
-Second terminal:
+<img src="docs/images/hosted-agent-csharp.jpg" alt="C# hosted agent responding to hi in Agent Inspector" width="520">
 
-```bash
-cd ./02-MAF-Agent-CS-Hosted
-azd ai agent invoke maf-agent-cs-02 --local --new-session --protocol responses "Hello from C#!"
-```
-
-The startup process is a web server, so logs ending with `Now listening on:
-http://[::]:8088` mean it is working and waiting for the invocation. With
-`azure.ai.agents` 1.0.0-beta.13, `azd` may then probe the Invocations-only route
-`/invocations/docs/openapi.json` and log a non-fatal `404`; the C# sample uses
-Responses, so wait for `Agent ready` and invoke it with `--protocol responses`
-as shown above. If startup reports an invalid project endpoint, set
-`FOUNDRY_PROJECT_ENDPOINT` to the full Foundry Project URL, including
-`/api/projects/<project>`. Local C# authentication prefers the identity from
-`az login`, falls back to `azd auth login`, and uses managed identity when
-deployed.
-
-#### Go (Invocations protocol)
-
-First terminal:
+### Go hosted agent
 
 ```bash
 cd ./04-MAF-Agent-GO-Hosted
-azd ai agent run
+azd ai agent run --start-command "go run ."
 ```
 
-Second terminal:
+<img src="docs/images/hosted-agent-go.jpg" alt="Go hosted agent responding to hi in Agent Inspector" width="520">
 
-```bash
-cd ./04-MAF-Agent-GO-Hosted
-azd ai agent invoke maf-agent-go-04 --local --new-session --protocol invocations "Hello from Go!"
-```
-
-#### C++ (Invocations protocol)
-
-First terminal:
+### C++ hosted agent
 
 ```bash
 cd ./06-Foundry-Agent-CPP-Hosted
 azd ai agent run --start-command "./build/debug/maf_agent_cpp_06"
 ```
 
-`azd` cannot auto-detect CMake projects, so the C++ command specifies the
-already-built executable. If it does not exist, run the C++ build commands from
-the [Build](#build) section first.
+<img src="docs/images/hosted-agent-cpp.jpg" alt="C++ hosted agent responding to hi in Agent Inspector" width="520">
 
-Second terminal:
-
-```bash
-cd ./06-Foundry-Agent-CPP-Hosted
-azd ai agent invoke maf-agent-cpp-06 --local --new-session --protocol invocations "Hello from C++!"
-```
-
-### Windows (PowerShell)
-
-```powershell
-dotnet run --project ./01-MAF-Agent-CS/01-MAF-Agent-CS.csproj
-Push-Location ./03-MAF-Agent-GO; go run .; Pop-Location
-./05-Foundry-Agent-CPP/build/debug/maf_agent_cpp_05.exe
-```
-
-### Hosted agent sessions (PowerShell)
-
-Run the host command from the sample folder. It opens Agent Inspector on port
-`8087`; the CLI invocation in a second terminal is optional.
-
-| Language | First terminal: start host | Second terminal: start a fresh session |
-|---|---|---|
-| C# | `Set-Location ./02-MAF-Agent-CS-Hosted; azd ai agent run` | `Set-Location ./02-MAF-Agent-CS-Hosted; azd ai agent invoke --local --new-session --protocol responses "Hello from C#!"` |
-| Go | `Set-Location ./04-MAF-Agent-GO-Hosted; azd ai agent run` | `Set-Location ./04-MAF-Agent-GO-Hosted; azd ai agent invoke --local --new-session --protocol invocations "Hello from Go!"` |
-| C++ | `Set-Location ./06-Foundry-Agent-CPP-Hosted; azd ai agent run --start-command ".\build\debug\maf_agent_cpp_06.exe"` | `Set-Location ./06-Foundry-Agent-CPP-Hosted; azd ai agent invoke --local --new-session --protocol invocations "Hello from C++!"` |
-
-See the READMEs for [`03-MAF-Agent-GO`](03-MAF-Agent-GO/README.md),
-[`04-MAF-Agent-GO-Hosted`](04-MAF-Agent-GO-Hosted/README.md),
-[`05-Foundry-Agent-CPP`](05-Foundry-Agent-CPP/README.md), and
-[`06-Foundry-Agent-CPP-Hosted`](06-Foundry-Agent-CPP-Hosted/README.md) for
-sample-specific details and hosted endpoint examples.
+Each launch opens Agent Inspector on port `8087` and hosts the agent on port
+`8088`. Stop the current agent before launching another one.
 
 ## Test
 
