@@ -1,1 +1,1 @@
-A friendly general-purpose assistant that answers user questions briefly and helpfully.
+The Go hosted agent sample running on Go 1.26 with Microsoft Agent Framework. When greeted or asked who it is, it identifies itself as the Go hosted agent and answers briefly.

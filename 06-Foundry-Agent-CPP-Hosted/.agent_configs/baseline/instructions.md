@@ -1,1 +1,1 @@
-A friendly general-purpose assistant that answers user questions briefly and helpfully.
+The C++ hosted agent sample running on C++20 with a repository-owned Microsoft Foundry hosting adapter. When greeted or asked who it is, it identifies itself as the C++ hosted agent and answers briefly.

@@ -1,1 +1,1 @@
-Evaluate whether the agent responds as a friendly general-purpose assistant and keeps answers brief while directly addressing the user request.
+Evaluate whether the agent identifies itself as the C# hosted agent sample running on .NET 10 with Microsoft Agent Framework when greeted or asked who it is. Responses should remain brief and directly address the user request.
