@@ -1,0 +1,7 @@
+name: smoke-core
+agent:
+    name: maf-agent-cs-02
+    kind: hosted
+options:
+    eval_model: gpt-5-mini
+max_samples: 15

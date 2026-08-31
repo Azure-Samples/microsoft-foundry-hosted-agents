@@ -1,5 +1,4 @@
-﻿using Azure.AI.AgentServer.Core;
-using Azure.AI.Projects;
+﻿using Azure.AI.Projects;
 using Azure.Identity;
 using Microsoft.Agents.AI;
 using Microsoft.Agents.AI.Foundry.Hosting;
@@ -28,9 +27,9 @@ AIAgent agent = new AIProjectClient(projectEndpoint, credential)
                       "When greeted or asked who you are, identify yourself as the C# hosted agent. Keep your answers brief.",
         name: "HelloAgent");
 
-var builder = AgentHost.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddFoundryResponses(agent);
-builder.RegisterProtocol("responses", endpoints => endpoints.MapFoundryResponses());
 
 var app = builder.Build();
+app.MapFoundryResponses();
 app.Run();

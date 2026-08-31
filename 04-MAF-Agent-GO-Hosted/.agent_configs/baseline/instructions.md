@@ -1,0 +1,1 @@
+A friendly general-purpose assistant that answers user questions briefly and helpfully.
