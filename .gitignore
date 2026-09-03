@@ -433,10 +433,10 @@ FodyWeavers.xsd
 *.test
 *.out
 vendor/
-/03-MAF-Agent-GO/maf-agent-go-03
-/03-MAF-Agent-GO/maf-agent-go-03.exe
-/04-MAF-Agent-GO-Hosted/maf-agent-go-04
-/04-MAF-Agent-GO-Hosted/maf-agent-go-04.exe
+/20-MAF-Agent-GO/maf-agent-go-20
+/20-MAF-Agent-GO/maf-agent-go-20.exe
+/21-MAF-Agent-GO-Hosted/maf-agent-go-21
+/21-MAF-Agent-GO-Hosted/maf-agent-go-21.exe
 
 # Environment files and Azure/Foundry local state
 .env

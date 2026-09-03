@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(maf_agent_cpp_06 VERSION 0.1.0 LANGUAGES CXX)
+project(maf_agent_cpp_41 VERSION 0.1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(MAF_CPP05_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-add_subdirectory(../05-Foundry-Agent-CPP MAF-Agent-CPP-05)
+set(MAF_CPP40_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+add_subdirectory(../40-Foundry-Agent-CPP MAF-Agent-CPP-40)
 
 find_package(httplib CONFIG REQUIRED)
 
@@ -31,21 +31,21 @@ else()
     target_compile_options(foundry_host PRIVATE -Wall -Wextra -Wpedantic)
 endif()
 
-add_executable(maf_agent_cpp_06 src/main.cpp)
-target_link_libraries(maf_agent_cpp_06 PRIVATE foundry_host)
+add_executable(maf_agent_cpp_41 src/main.cpp)
+target_link_libraries(maf_agent_cpp_41 PRIVATE foundry_host)
 
-option(MAF_CPP06_BUILD_TESTS "Build MAF-Agent-CPP-06 tests" ON)
-if(MAF_CPP06_BUILD_TESTS)
+option(MAF_CPP41_BUILD_TESTS "Build MAF-Agent-CPP-41 tests" ON)
+if(MAF_CPP41_BUILD_TESTS)
     include(CTest)
     find_package(Catch2 3 CONFIG REQUIRED)
 
-    add_executable(maf_agent_cpp_06_tests tests/host_tests.cpp)
-    target_link_libraries(maf_agent_cpp_06_tests
+    add_executable(maf_agent_cpp_41_tests tests/host_tests.cpp)
+    target_link_libraries(maf_agent_cpp_41_tests
         PRIVATE
             foundry_host
             Catch2::Catch2WithMain
     )
 
     include(Catch)
-    catch_discover_tests(maf_agent_cpp_06_tests)
+    catch_discover_tests(maf_agent_cpp_41_tests)
 endif()

@@ -1,6 +1,6 @@
-# 06-Foundry-Agent-CPP-Hosted
+# 41-Foundry-Agent-CPP-Hosted
 
-This sample reuses the client from [`05-Foundry-Agent-CPP`](../05-Foundry-Agent-CPP/README.md) and hosts it in a C++20 Linux container for Microsoft Foundry Hosted Agents.
+This sample reuses the client from [`40-Foundry-Agent-CPP`](../40-Foundry-Agent-CPP/README.md) and hosts it in a C++20 Linux container for Microsoft Foundry Hosted Agents.
 
 The server binds to `0.0.0.0`, defaults to port `8088`, and implements:
 
@@ -15,7 +15,7 @@ See the [C++ research report](../docs/research/cpp-agents-with-microsoft-foundry
 
 ## Prerequisites
 
-- The local prerequisites from [`05-Foundry-Agent-CPP`](../05-Foundry-Agent-CPP/README.md)
+- The local prerequisites from [`40-Foundry-Agent-CPP`](../40-Foundry-Agent-CPP/README.md)
 - Docker for local container builds
 - Azure Developer CLI (`azd`) and the Foundry agent extensions for deployment
 
@@ -37,7 +37,7 @@ Run the server on Linux/macOS:
 ```bash
 export FOUNDRY_PROJECT_ENDPOINT="https://<resource>.services.ai.azure.com/api/projects/<project>"
 export AZURE_AI_MODEL_DEPLOYMENT_NAME="gpt-5-mini"
-./build/debug/maf_agent_cpp_06
+./build/debug/maf_agent_cpp_41
 ```
 
 On Windows:
@@ -45,7 +45,7 @@ On Windows:
 ```powershell
 $env:FOUNDRY_PROJECT_ENDPOINT = "https://<resource>.services.ai.azure.com/api/projects/<project>"
 $env:AZURE_AI_MODEL_DEPLOYMENT_NAME = "gpt-5-mini"
-.\build\debug\maf_agent_cpp_06.exe
+.\build\debug\maf_agent_cpp_41.exe
 ```
 
 Check readiness and invoke it from Linux/macOS:
@@ -77,8 +77,8 @@ The Docker build context must be the repository root because the hosted sample c
 
 ```powershell
 docker build --platform linux/amd64 `
-  -f .\06-Foundry-Agent-CPP-Hosted\Dockerfile `
-  -t maf-agent-cpp-06 .
+  -f .\41-Foundry-Agent-CPP-Hosted\Dockerfile `
+  -t maf-agent-cpp-41 .
 ```
 
 Run it with your current Azure credential environment or workload identity configuration:
@@ -87,7 +87,7 @@ Run it with your current Azure credential environment or workload identity confi
 docker run --rm -p 8088:8088 `
   -e FOUNDRY_PROJECT_ENDPOINT `
   -e AZURE_AI_MODEL_DEPLOYMENT_NAME `
-  maf-agent-cpp-06
+  maf-agent-cpp-41
 ```
 
 ## Deploy

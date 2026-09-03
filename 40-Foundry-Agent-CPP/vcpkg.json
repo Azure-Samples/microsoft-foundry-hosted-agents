@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
-  "name": "maf-agent-cpp-05",
+  "name": "maf-agent-cpp-40",
   "version": "0.1.0",
   "dependencies": [
     "azure-core-cpp",

@@ -1,4 +1,6 @@
 <Solution>
   <Project Path="01-MAF-Agent-CS/01-MAF-Agent-CS.csproj" />
   <Project Path="02-MAF-Agent-CS-Hosted/02-MAF-Agent-CS-Hosted.csproj" />
+  <Project Path="03-MAF-Agent-CS-Harness/03-MAF-Agent-CS-Harness.csproj" />
+  <Project Path="04-MAF-Agent-CS-Harness-Hosted/04-MAF-Agent-CS-Harness-Hosted.csproj" />
 </Solution>

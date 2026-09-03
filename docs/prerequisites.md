@@ -10,7 +10,7 @@ The repository dev container includes .NET 10, Go 1.26, CMake, Ninja, a C++20 co
 2. Set the environment variables for your terminal shell as described below.
 3. Choose and run an agent from the repository [Run guide](../README.md#run).
 
-During first-time container creation, lifecycle commands build all six samples,
+During first-time container creation, lifecycle commands build all eight samples,
 including restoring NuGet, Go, and vcpkg dependencies. The C++ step can take
 several minutes on a cold cache. Named cache volumes retain downloads and
 compiled dependencies, so later builds and recreated containers are
@@ -49,9 +49,9 @@ Install only the toolchains for the samples you plan to use:
 
 | Samples | Required tools |
 |---|---|
-| C# (`01`, `02`) | [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) |
-| Go (`03`, `04`) | [Go 1.26 or later](https://go.dev/doc/install) |
-| C++ (`05`, `06`) | [CMake 3.25+](https://cmake.org/download/), [Ninja](https://ninja-build.org/), a C++20 compiler, and [vcpkg](https://learn.microsoft.com/vcpkg/get_started/get-started) with `VCPKG_ROOT` set |
+| C# (`01`, `02`, `03`, `04`) | [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) |
+| Go (`20`, `21`) | [Go 1.26 or later](https://go.dev/doc/install) |
+| C++ (`40`, `41`) | [CMake 3.25+](https://cmake.org/download/), [Ninja](https://ninja-build.org/), a C++20 compiler, and [vcpkg](https://learn.microsoft.com/vcpkg/get_started/get-started) with `VCPKG_ROOT` set |
 | All live calls | [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli), signed in with `az login` |
 | Hosted-agent deployment | [Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd) |
 | Optional local container builds | [Docker Desktop](https://www.docker.com/products/docker-desktop/) or another OCI-compatible builder |

@@ -7,8 +7,10 @@
 **/obj/
 01-MAF-Agent-CS/
 02-MAF-Agent-CS-Hosted/
-03-MAF-Agent-GO/
-04-MAF-Agent-GO-Hosted/
+03-MAF-Agent-CS-Harness/
+04-MAF-Agent-CS-Harness-Hosted/
+20-MAF-Agent-GO/
+21-MAF-Agent-GO-Hosted/
 docs/
 *.md
 *.slnx

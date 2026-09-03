@@ -1,4 +1,4 @@
-module github.com/elbruno/hosted-agent-labs/maf-agent-go-04
+module github.com/elbruno/hosted-agent-labs/maf-agent-go-21
 
 go 1.26.0
 

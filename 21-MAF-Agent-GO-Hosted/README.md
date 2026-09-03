@@ -1,4 +1,4 @@
-# 04-MAF-Agent-GO-Hosted
+# 21-MAF-Agent-GO-Hosted
 
 This sample hosts a Microsoft Agent Framework Go agent as a containerized Microsoft Foundry Hosted Agent. It exposes `/invocations` for plain-text chat prompts and provides `/readiness` for platform health checks. The same endpoint also supports optional Agent Framework Go AG-UI JSON requests with Server-Sent Events (SSE) responses.
 
@@ -113,7 +113,7 @@ Invoke-WebRequest `
 Foundry Hosted Agents require a Linux AMD64 image:
 
 ```bash
-docker build --platform linux/amd64 -t maf-agent-go-04 .
+docker build --platform linux/amd64 -t maf-agent-go-21 .
 ```
 
 The runtime container intentionally runs as root. Foundry mounts the per-session
@@ -137,7 +137,7 @@ In the Foundry playground, use the **Chat** tab for plain-text prompts. Use
 For plain-text invocation from the CLI:
 
 ```bash
-azd ai agent invoke maf-agent-go-04 "Hello!" --protocol invocations
+azd ai agent invoke maf-agent-go-21 "Hello!" --protocol invocations
 ```
 
 For the optional AG-UI interface, save a payload as `request.json`, then invoke
@@ -160,5 +160,5 @@ the Invocations endpoint:
     forwardedProps = @{}
 } | ConvertTo-Json -Depth 5 | Set-Content request.json
 
-azd ai agent invoke maf-agent-go-04 --protocol invocations --input-file request.json
+azd ai agent invoke maf-agent-go-21 --protocol invocations --input-file request.json
 ```

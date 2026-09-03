@@ -1,8 +1,8 @@
 name: smoke-core
 agent:
-    name: maf-agent-cpp-06
-    kind: hosted
-    config: .agent_configs\baseline\metadata.yaml
+  name: maf-agent-cpp-41
+  kind: hosted
+  config: .agent_configs\baseline\metadata.yaml
 options:
-    eval_model: gpt-5-mini
+  eval_model: gpt-5-mini
 max_samples: 15

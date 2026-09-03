@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(maf_agent_cpp_05 VERSION 0.1.0 LANGUAGES CXX)
+project(maf_agent_cpp_40 VERSION 0.1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -37,25 +37,25 @@ else()
     target_compile_options(foundry_agent PRIVATE -Wall -Wextra -Wpedantic)
 endif()
 
-add_executable(maf_agent_cpp_05 src/main.cpp)
-target_link_libraries(maf_agent_cpp_05 PRIVATE FoundryAgent::foundry_agent)
+add_executable(maf_agent_cpp_40 src/main.cpp)
+target_link_libraries(maf_agent_cpp_40 PRIVATE FoundryAgent::foundry_agent)
 
-option(MAF_CPP05_BUILD_TESTS "Build MAF-Agent-CPP-05 tests" ON)
-if(MAF_CPP05_BUILD_TESTS)
+option(MAF_CPP40_BUILD_TESTS "Build MAF-Agent-CPP-40 tests" ON)
+if(MAF_CPP40_BUILD_TESTS)
     include(CTest)
     find_package(Catch2 3 CONFIG REQUIRED)
 
-    add_executable(maf_agent_cpp_05_tests
+    add_executable(maf_agent_cpp_40_tests
         tests/agent_tests.cpp
         tests/config_tests.cpp
     )
-    target_include_directories(maf_agent_cpp_05_tests PRIVATE tests)
-    target_link_libraries(maf_agent_cpp_05_tests
+    target_include_directories(maf_agent_cpp_40_tests PRIVATE tests)
+    target_link_libraries(maf_agent_cpp_40_tests
         PRIVATE
             FoundryAgent::foundry_agent
             Catch2::Catch2WithMain
     )
 
     include(Catch)
-    catch_discover_tests(maf_agent_cpp_05_tests)
+    catch_discover_tests(maf_agent_cpp_40_tests)
 endif()

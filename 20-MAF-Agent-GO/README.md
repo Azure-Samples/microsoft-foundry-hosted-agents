@@ -1,4 +1,4 @@
-# 03-MAF-Agent-GO
+# 20-MAF-Agent-GO
 
 This console sample uses the Microsoft Agent Framework for Go with a Microsoft Foundry project-backed agent.
 

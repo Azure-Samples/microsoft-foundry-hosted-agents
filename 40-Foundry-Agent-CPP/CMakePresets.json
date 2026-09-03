@@ -21,7 +21,7 @@
       "inherits": "base",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "MAF_CPP05_BUILD_TESTS": "ON"
+        "MAF_CPP40_BUILD_TESTS": "ON"
       }
     },
     {
@@ -29,7 +29,7 @@
       "inherits": "base",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "MAF_CPP05_BUILD_TESTS": "OFF"
+        "MAF_CPP40_BUILD_TESTS": "OFF"
       }
     }
   ],

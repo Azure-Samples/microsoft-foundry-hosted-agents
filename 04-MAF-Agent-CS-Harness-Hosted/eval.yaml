@@ -1,8 +1,7 @@
 name: smoke-core
 agent:
-  name: maf-agent-go-21
+  name: maf-agent-cs-04
   kind: hosted
-  config: .agent_configs\baseline\metadata.yaml
 options:
   eval_model: gpt-5-mini
 max_samples: 15

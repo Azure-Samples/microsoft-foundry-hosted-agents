@@ -72,6 +72,30 @@ azd ai agent invoke maf-agent-cs-02 --local --protocol responses "who are you"
 A non-fatal `404` for `/invocations/docs/openapi.json` during startup can be
 ignored because this sample uses Responses rather than Invocations.
 
+## C# Harness hosted agent
+
+The C# Harness sample runs on **.NET 10**, uses the Microsoft Agent Framework
+Harness (`HarnessAgent`), and exposes the **Responses** protocol.
+
+### Terminal 1
+
+```bash
+cd ./04-MAF-Agent-CS-Harness-Hosted
+azd ai agent run
+```
+
+### Agent Inspector
+
+Keep **Responses Protocol** selected and send `hi` in the chat box.
+
+### Terminal 2
+
+```bash
+cd ./04-MAF-Agent-CS-Harness-Hosted
+azd ai agent invoke maf-agent-cs-04 --local --new-session --new-conversation --protocol responses "hi"
+azd ai agent invoke maf-agent-cs-04 --local --protocol responses "who are you"
+```
+
 ## Go hosted agent
 
 The Go sample runs on **Go 1.26**, uses Microsoft Agent Framework for Go, and
@@ -80,7 +104,7 @@ exposes the **Invocations** protocol with AG-UI.
 ### Terminal 1
 
 ```bash
-cd ./04-MAF-Agent-GO-Hosted
+cd ./21-MAF-Agent-GO-Hosted
 azd ai agent run --start-command "go run ."
 ```
 
@@ -97,9 +121,9 @@ request and event contracts.
 ### Terminal 2
 
 ```bash
-cd ./04-MAF-Agent-GO-Hosted
-azd ai agent invoke maf-agent-go-04 --local --new-session --protocol invocations "hi"
-azd ai agent invoke maf-agent-go-04 --local --protocol invocations "who are you"
+cd ./21-MAF-Agent-GO-Hosted
+azd ai agent invoke maf-agent-go-21 --local --new-session --protocol invocations "hi"
+azd ai agent invoke maf-agent-go-21 --local --protocol invocations "who are you"
 ```
 
 ## C++ hosted agent
@@ -111,8 +135,8 @@ text events.
 ### Terminal 1
 
 ```bash
-cd ./06-Foundry-Agent-CPP-Hosted
-azd ai agent run --start-command "./build/debug/maf_agent_cpp_06"
+cd ./41-Foundry-Agent-CPP-Hosted
+azd ai agent run --start-command "./build/debug/maf_agent_cpp_41"
 ```
 
 The explicit start command is required because `azd` does not auto-detect CMake
@@ -128,9 +152,9 @@ to Responses.
 ### Terminal 2
 
 ```bash
-cd ./06-Foundry-Agent-CPP-Hosted
-azd ai agent invoke maf-agent-cpp-06 --local --new-session --protocol invocations "hi"
-azd ai agent invoke maf-agent-cpp-06 --local --protocol invocations "who are you"
+cd ./41-Foundry-Agent-CPP-Hosted
+azd ai agent invoke maf-agent-cpp-41 --local --new-session --protocol invocations "hi"
+azd ai agent invoke maf-agent-cpp-41 --local --protocol invocations "who are you"
 ```
 
 ## PowerShell navigation

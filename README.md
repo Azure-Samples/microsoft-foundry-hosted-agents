@@ -8,11 +8,13 @@ This repository contains a small set of sample Microsoft Agent Framework (MAF) a
 |---|---|---|---|
 | `01-MAF-Agent-CS` | C# | Console app | Creates an AI agent from a Microsoft Foundry project and runs a single sample prompt, then exits. |
 | `02-MAF-Agent-CS-Hosted` | C# | Hosted agent | Runs as a long-lived web service that registers a Foundry **Responses** endpoint with `AgentHost`, so Foundry can call it like any other hosted agent. |
-| `03-MAF-Agent-GO` | Go | Console app | Creates and runs a Microsoft Agent Framework agent backed by a Foundry project, prints one response, then exits. |
-| `04-MAF-Agent-GO-Hosted` | Go | Hosted agent | A containerized service that exposes Foundry's **Invocations** protocol (including the AG-UI contract) so it can be deployed and called as a Foundry hosted agent. |
-| `MAF-Agents-Samples.slnx` | — | — | Solution file for the two C# projects. |
-| `05-Foundry-Agent-CPP` | C++ | Console app | Calls a Foundry Project from C++20 through Microsoft Entra authentication and the project-scoped Responses REST API. |
-| `06-Foundry-Agent-CPP-Hosted` | C++ | Hosted agent | Reuses the C++ client in a Linux container that exposes Foundry's **Invocations** protocol through cpp-httplib. |
+| `03-MAF-Agent-CS-Harness` | C# | Console app | Creates a `HarnessAgent` (Microsoft Agent Framework Harness) from a Microsoft Foundry project and runs a single sample prompt, then exits. |
+| `04-MAF-Agent-CS-Harness-Hosted` | C# | Hosted agent | Hosts a `HarnessAgent` as a long-lived web service that registers a Foundry **Responses** endpoint. |
+| `20-MAF-Agent-GO` | Go | Console app | Creates and runs a Microsoft Agent Framework agent backed by a Foundry project, prints one response, then exits. |
+| `21-MAF-Agent-GO-Hosted` | Go | Hosted agent | A containerized service that exposes Foundry's **Invocations** protocol (including the AG-UI contract) so it can be deployed and called as a Foundry hosted agent. |
+| `MAF-Agents-Samples.slnx` | — | — | Solution file for the four C# projects. |
+| `40-Foundry-Agent-CPP` | C++ | Console app | Calls a Foundry Project from C++20 through Microsoft Entra authentication and the project-scoped Responses REST API. |
+| `41-Foundry-Agent-CPP-Hosted` | C++ | Hosted agent | Reuses the C++ client in a Linux container that exposes Foundry's **Invocations** protocol through cpp-httplib. |
 
 **Console app vs. hosted agent, in plain terms:**
 - A **console app** is a simple, one-shot program you run locally with `dotnet run` or `go run`. It calls Foundry once, prints the answer, and exits. Use these first to confirm your Foundry project and model deployment work.
@@ -28,13 +30,13 @@ See [Prerequisites and local setup](docs/prerequisites.md) for:
 - Bash, Zsh, PowerShell, and Command Prompt environment-variable syntax; and
 - troubleshooting for common shell, credential, model, and vcpkg errors.
 
-> **Note on preview packages:** The C# samples reference preview/beta NuGet packages (`Azure.AI.Projects`, `Microsoft.Agents.AI.Foundry`, `Microsoft.Agents.AI.Foundry.Hosting`). These SDKs are under active development and their APIs may change between versions. If a sample fails to build after `dotnet restore`, check whether a newer preview package version changed an API used in `Program.cs`.
+> **Note on preview packages:** The C# samples reference preview/beta NuGet packages (`Azure.AI.Projects`, `Microsoft.Agents.AI.Foundry`, `Microsoft.Agents.AI.Foundry.Hosting`, `Microsoft.Agents.AI.Harness`). These SDKs are under active development and their APIs may change between versions. If a sample fails to build after `dotnet restore`, check whether a newer preview package version changed an API used in `Program.cs`.
 
 > **C++ support boundary:** Microsoft Foundry and Microsoft Agent Framework do not currently provide a first-party C++ agent SDK or hosting adapter. The C++ samples use first-party `azure-identity-cpp` for authentication and repository-owned REST and hosting adapters. See [C++ Agents with Microsoft Foundry](docs/research/cpp-agents-with-microsoft-foundry.md) for the full research and trade-off analysis.
 
 ## Dev container
 
-The fastest way to prepare all six samples is to open the repository in its
+The fastest way to prepare all eight samples is to open the repository in its
 devcontainer. It provides .NET 10, Go 1.26, C++20, CMake, Ninja, vcpkg, Azure
 CLI, Azure Developer CLI, and GitHub CLI on Ubuntu 24.04.
 
@@ -45,7 +47,7 @@ and the [Dev Containers extension](https://marketplace.visualstudio.com/items?it
 then run **Dev Containers: Reopen in Container** from the VS Code command
 palette. GitHub Codespaces automatically uses the same configuration.
 
-The container automatically builds all six samples when it is first created.
+The container automatically builds all eight samples when it is first created.
 This can take several minutes while vcpkg builds C++ dependencies. Persistent
 cache volumes make subsequent rebuilds and recreated containers faster. After
 the initialization finishes, you only need to run `az login` inside the
@@ -83,7 +85,7 @@ for Windows Command Prompt syntax and `.env` guidance.
 
 ## Build
 
-From the repository root, build all six samples with the commands for your
+From the repository root, build all eight samples with the commands for your
 shell. In VS Code on any operating system, you can instead run the
 **Build and test all samples** task.
 
@@ -95,20 +97,20 @@ shell. In VS Code on any operating system, you can instead run the
 
 ```bash
 dotnet build ./MAF-Agents-Samples.slnx
-(cd ./03-MAF-Agent-GO && go build ./...)
-(cd ./04-MAF-Agent-GO-Hosted && go build ./...)
-(cd ./05-Foundry-Agent-CPP && cmake --preset debug && cmake --build --preset debug)
-(cd ./06-Foundry-Agent-CPP-Hosted && cmake --preset debug && cmake --build --preset debug)
+(cd ./20-MAF-Agent-GO && go build ./...)
+(cd ./21-MAF-Agent-GO-Hosted && go build ./...)
+(cd ./40-Foundry-Agent-CPP && cmake --preset debug && cmake --build --preset debug)
+(cd ./41-Foundry-Agent-CPP-Hosted && cmake --preset debug && cmake --build --preset debug)
 ```
 
 ### Windows (PowerShell)
 
 ```powershell
 dotnet build ./MAF-Agents-Samples.slnx
-Push-Location ./03-MAF-Agent-GO; go build ./...; Pop-Location
-Push-Location ./04-MAF-Agent-GO-Hosted; go build ./...; Pop-Location
-Push-Location ./05-Foundry-Agent-CPP; cmake --preset debug; cmake --build --preset debug; Pop-Location
-Push-Location ./06-Foundry-Agent-CPP-Hosted; cmake --preset debug; cmake --build --preset debug; Pop-Location
+Push-Location ./20-MAF-Agent-GO; go build ./...; Pop-Location
+Push-Location ./21-MAF-Agent-GO-Hosted; go build ./...; Pop-Location
+Push-Location ./40-Foundry-Agent-CPP; cmake --preset debug; cmake --build --preset debug; Pop-Location
+Push-Location ./41-Foundry-Agent-CPP-Hosted; cmake --preset debug; cmake --build --preset debug; Pop-Location
 ```
 
 ## Run
@@ -121,8 +123,9 @@ troubleshooting, see [Run the hosted agents locally](docs/run-hosted-agents-loca
 
 ```bash
 dotnet run --project ./01-MAF-Agent-CS/01-MAF-Agent-CS.csproj
-(cd ./03-MAF-Agent-GO && go run .)
-./05-Foundry-Agent-CPP/build/debug/maf_agent_cpp_05
+dotnet run --project ./03-MAF-Agent-CS-Harness/03-MAF-Agent-CS-Harness.csproj
+(cd ./20-MAF-Agent-GO && go run .)
+./40-Foundry-Agent-CPP/build/debug/maf_agent_cpp_40
 ```
 
 ### C# hosted agent
@@ -134,10 +137,17 @@ azd ai agent run
 
 <img src="docs/images/hosted-agent-csharp.jpg" alt="C# hosted agent responding to hi in Agent Inspector" width="520">
 
+### C# Harness hosted agent
+
+```bash
+cd ./04-MAF-Agent-CS-Harness-Hosted
+azd ai agent run
+```
+
 ### Go hosted agent
 
 ```bash
-cd ./04-MAF-Agent-GO-Hosted
+cd ./21-MAF-Agent-GO-Hosted
 azd ai agent run --start-command "go run ."
 ```
 
@@ -146,8 +156,8 @@ azd ai agent run --start-command "go run ."
 ### C++ hosted agent
 
 ```bash
-cd ./06-Foundry-Agent-CPP-Hosted
-azd ai agent run --start-command "./build/debug/maf_agent_cpp_06"
+cd ./41-Foundry-Agent-CPP-Hosted
+azd ai agent run --start-command "./build/debug/maf_agent_cpp_41"
 ```
 
 <img src="docs/images/hosted-agent-cpp.jpg" alt="C++ hosted agent responding to hi in Agent Inspector" width="520">
@@ -162,19 +172,19 @@ Run all available tests from the repository root.
 Bash/Zsh:
 
 ```bash
-(cd ./03-MAF-Agent-GO && go test ./...)
-(cd ./04-MAF-Agent-GO-Hosted && go test ./...)
-(cd ./05-Foundry-Agent-CPP && ctest --preset debug)
-(cd ./06-Foundry-Agent-CPP-Hosted && ctest --preset debug)
+(cd ./20-MAF-Agent-GO && go test ./...)
+(cd ./21-MAF-Agent-GO-Hosted && go test ./...)
+(cd ./40-Foundry-Agent-CPP && ctest --preset debug)
+(cd ./41-Foundry-Agent-CPP-Hosted && ctest --preset debug)
 ```
 
 PowerShell:
 
 ```powershell
-Push-Location ./03-MAF-Agent-GO; go test ./...; Pop-Location
-Push-Location ./04-MAF-Agent-GO-Hosted; go test ./...; Pop-Location
-Push-Location ./05-Foundry-Agent-CPP; ctest --preset debug; Pop-Location
-Push-Location ./06-Foundry-Agent-CPP-Hosted; ctest --preset debug; Pop-Location
+Push-Location ./20-MAF-Agent-GO; go test ./...; Pop-Location
+Push-Location ./21-MAF-Agent-GO-Hosted; go test ./...; Pop-Location
+Push-Location ./40-Foundry-Agent-CPP; ctest --preset debug; Pop-Location
+Push-Location ./41-Foundry-Agent-CPP-Hosted; ctest --preset debug; Pop-Location
 ```
 
 The C++ tests inject credentials and HTTP transports, so they do not require

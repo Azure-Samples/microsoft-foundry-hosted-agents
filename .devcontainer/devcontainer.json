@@ -49,8 +49,8 @@
   "onCreateCommand": "sudo bash .devcontainer/initialize-cache-volumes.sh",
   "postCreateCommand": {
     "dotnet": "dotnet build MAF-Agents-Samples.slnx",
-    "go-03": "cd 03-MAF-Agent-GO && go build ./...",
-    "go-04": "cd 04-MAF-Agent-GO-Hosted && go build ./...",
+    "go-20": "cd 20-MAF-Agent-GO && go build ./...",
+    "go-21": "cd 21-MAF-Agent-GO-Hosted && go build ./...",
     "cpp": "bash .devcontainer/build-cpp-samples.sh"
   },
   "customizations": {

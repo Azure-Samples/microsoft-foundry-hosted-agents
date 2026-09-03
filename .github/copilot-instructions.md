@@ -53,10 +53,12 @@ Folders are numbered by build/complexity order and named
 |---|---|---|
 | [01-MAF-Agent-CS](/d:/azure-samples/microsoft-foundry-hosted-agents/01-MAF-Agent-CS) | C# | Console app |
 | [02-MAF-Agent-CS-Hosted](/d:/azure-samples/microsoft-foundry-hosted-agents/02-MAF-Agent-CS-Hosted) | C# | Hosted agent |
-| [03-MAF-Agent-GO](/d:/azure-samples/microsoft-foundry-hosted-agents/03-MAF-Agent-GO) | Go | Console app |
-| [04-MAF-Agent-GO-Hosted](/d:/azure-samples/microsoft-foundry-hosted-agents/04-MAF-Agent-GO-Hosted) | Go | Hosted agent |
-| [05-Foundry-Agent-CPP](/d:/azure-samples/microsoft-foundry-hosted-agents/05-Foundry-Agent-CPP) | C++ | Console app |
-| [06-Foundry-Agent-CPP-Hosted](/d:/azure-samples/microsoft-foundry-hosted-agents/06-Foundry-Agent-CPP-Hosted) | C++ | Hosted agent |
+| [03-MAF-Agent-CS-Harness](/d:/azure-samples/microsoft-foundry-hosted-agents/03-MAF-Agent-CS-Harness) | C# | Console app (Microsoft Agent Framework Harness) |
+| [04-MAF-Agent-CS-Harness-Hosted](/d:/azure-samples/microsoft-foundry-hosted-agents/04-MAF-Agent-CS-Harness-Hosted) | C# | Hosted agent (Microsoft Agent Framework Harness) |
+| [20-MAF-Agent-GO](/d:/azure-samples/microsoft-foundry-hosted-agents/20-MAF-Agent-GO) | Go | Console app |
+| [21-MAF-Agent-GO-Hosted](/d:/azure-samples/microsoft-foundry-hosted-agents/21-MAF-Agent-GO-Hosted) | Go | Hosted agent |
+| [40-Foundry-Agent-CPP](/d:/azure-samples/microsoft-foundry-hosted-agents/40-Foundry-Agent-CPP) | C++ | Console app |
+| [41-Foundry-Agent-CPP-Hosted](/d:/azure-samples/microsoft-foundry-hosted-agents/41-Foundry-Agent-CPP-Hosted) | C++ | Hosted agent |
 
 The C++ folders intentionally use `Foundry-Agent-CPP` (not `MAF-Agent-CPP`)
 because Microsoft Foundry / Microsoft Agent Framework do not provide a
@@ -71,7 +73,7 @@ folder was renamed, since changing them can break existing Foundry
 deployments or violate language constraints:
 
 - `name:` / service keys in each sample's `azure.yaml` (azd deployment
-  identifiers, e.g. `maf-agent-cs-02`, `maf-agent-go-04`, `maf-agent-cpp-06`)
+  identifiers, e.g. `maf-agent-cs-02`, `maf-agent-go-21`, `maf-agent-cpp-41`)
 - CMake `project(...)` names, target names, and `option(...)` names in
   `CMakeLists.txt`
 - `vcpkg.json` `name` fields
@@ -92,12 +94,12 @@ match current folder names.
 
 ## Build, run, test
 
-- **.NET**: `dotnet build .\MAF-Agents-Samples.slnx` builds both C# samples.
+- **.NET**: `dotnet build .\MAF-Agents-Samples.slnx` builds all four C# samples.
 - **Go**: each Go sample is built/tested independently from its own folder
   (`go build ./...`, `go test ./...`); there is no top-level Go workspace.
 - **C++**: each C++ sample uses its own `CMakePresets.json` (`debug` preset)
-  with vcpkg for dependencies; `06-Foundry-Agent-CPP-Hosted` depends on
-  `05-Foundry-Agent-CPP` via `add_subdirectory`, so `05` must be buildable on
+  with vcpkg for dependencies; `41-Foundry-Agent-CPP-Hosted` depends on
+  `40-Foundry-Agent-CPP` via `add_subdirectory`, so `40` must be buildable on
   its own first.
 - CI (`.github/workflows/build.yml`) runs all three toolchains on every push
   and PR to `main` without needing Foundry credentials — it only validates

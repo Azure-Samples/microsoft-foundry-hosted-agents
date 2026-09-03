@@ -1,4 +1,4 @@
-# 05-Foundry-Agent-CPP
+# 40-Foundry-Agent-CPP
 
 This C++20 console sample calls a model deployment in a Microsoft Foundry Project, prints one answer, and exits. It mirrors the local C# and Go samples.
 
@@ -51,13 +51,13 @@ The tests inject both the credential and HTTP transport, so they do not require 
 Windows:
 
 ```powershell
-.\build\debug\maf_agent_cpp_05.exe
+.\build\debug\maf_agent_cpp_40.exe
 ```
 
 Linux or macOS:
 
 ```bash
-./build/debug/maf_agent_cpp_05
+./build/debug/maf_agent_cpp_40
 ```
 
 The request uses token scope `https://ai.azure.com/.default` and posts to:

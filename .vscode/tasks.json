@@ -11,98 +11,98 @@
       "problemMatcher": "$msCompile"
     },
     {
-      "label": "Go: Build 03",
+      "label": "Go: Build 20",
       "type": "shell",
       "command": "go build ./...",
       "options": {
-        "cwd": "${workspaceFolder}/03-MAF-Agent-GO"
+        "cwd": "${workspaceFolder}/20-MAF-Agent-GO"
       },
       "problemMatcher": "$go"
     },
     {
-      "label": "Go: Test 03",
+      "label": "Go: Test 20",
       "type": "shell",
       "command": "go test ./...",
-      "dependsOn": "Go: Build 03",
+      "dependsOn": "Go: Build 20",
       "options": {
-        "cwd": "${workspaceFolder}/03-MAF-Agent-GO"
+        "cwd": "${workspaceFolder}/20-MAF-Agent-GO"
       },
       "problemMatcher": "$go"
     },
     {
-      "label": "Go: Build 04",
+      "label": "Go: Build 21",
       "type": "shell",
       "command": "go build ./...",
       "options": {
-        "cwd": "${workspaceFolder}/04-MAF-Agent-GO-Hosted"
+        "cwd": "${workspaceFolder}/21-MAF-Agent-GO-Hosted"
       },
       "problemMatcher": "$go"
     },
     {
-      "label": "Go: Test 04",
+      "label": "Go: Test 21",
       "type": "shell",
       "command": "go test ./...",
-      "dependsOn": "Go: Build 04",
+      "dependsOn": "Go: Build 21",
       "options": {
-        "cwd": "${workspaceFolder}/04-MAF-Agent-GO-Hosted"
+        "cwd": "${workspaceFolder}/21-MAF-Agent-GO-Hosted"
       },
       "problemMatcher": "$go"
     },
     {
-      "label": "C++: Configure 05",
+      "label": "C++: Configure 40",
       "type": "shell",
       "command": "cmake --preset debug",
       "options": {
-        "cwd": "${workspaceFolder}/05-Foundry-Agent-CPP"
+        "cwd": "${workspaceFolder}/40-Foundry-Agent-CPP"
       },
       "problemMatcher": "$gcc"
     },
     {
-      "label": "C++: Build 05",
+      "label": "C++: Build 40",
       "type": "shell",
       "command": "cmake --build --preset debug",
-      "dependsOn": "C++: Configure 05",
+      "dependsOn": "C++: Configure 40",
       "options": {
-        "cwd": "${workspaceFolder}/05-Foundry-Agent-CPP"
+        "cwd": "${workspaceFolder}/40-Foundry-Agent-CPP"
       },
       "problemMatcher": "$gcc"
     },
     {
-      "label": "C++: Test 05",
+      "label": "C++: Test 40",
       "type": "shell",
       "command": "ctest --preset debug",
-      "dependsOn": "C++: Build 05",
+      "dependsOn": "C++: Build 40",
       "options": {
-        "cwd": "${workspaceFolder}/05-Foundry-Agent-CPP"
+        "cwd": "${workspaceFolder}/40-Foundry-Agent-CPP"
       },
       "problemMatcher": []
     },
     {
-      "label": "C++: Configure 06",
+      "label": "C++: Configure 41",
       "type": "shell",
       "command": "cmake --preset debug",
       "options": {
-        "cwd": "${workspaceFolder}/06-Foundry-Agent-CPP-Hosted"
+        "cwd": "${workspaceFolder}/41-Foundry-Agent-CPP-Hosted"
       },
       "problemMatcher": "$gcc"
     },
     {
-      "label": "C++: Build 06",
+      "label": "C++: Build 41",
       "type": "shell",
       "command": "cmake --build --preset debug",
-      "dependsOn": "C++: Configure 06",
+      "dependsOn": "C++: Configure 41",
       "options": {
-        "cwd": "${workspaceFolder}/06-Foundry-Agent-CPP-Hosted"
+        "cwd": "${workspaceFolder}/41-Foundry-Agent-CPP-Hosted"
       },
       "problemMatcher": "$gcc"
     },
     {
-      "label": "C++: Test 06",
+      "label": "C++: Test 41",
       "type": "shell",
       "command": "ctest --preset debug",
-      "dependsOn": "C++: Build 06",
+      "dependsOn": "C++: Build 41",
       "options": {
-        "cwd": "${workspaceFolder}/06-Foundry-Agent-CPP-Hosted"
+        "cwd": "${workspaceFolder}/41-Foundry-Agent-CPP-Hosted"
       },
       "problemMatcher": []
     },
@@ -110,10 +110,10 @@
       "label": "Build and test all samples",
       "dependsOn": [
         ".NET: Build solution",
-        "Go: Test 03",
-        "Go: Test 04",
-        "C++: Test 05",
-        "C++: Test 06"
+        "Go: Test 20",
+        "Go: Test 21",
+        "C++: Test 40",
+        "C++: Test 41"
       ],
       "dependsOrder": "sequence",
       "group": {
