@@ -10,7 +10,7 @@ name: maf-agent-cs-04
 services:
   foundry-project:
     host: azure.ai.project
-    endpoint: <your-foundry-project-endpoint> # e.g. https://<your-resource>.services.ai.azure.com/api/projects/<your-project>
+    endpoint: https://bruno-byok03-resource.services.ai.azure.com/api/projects/bruno-byok03
   maf-agent-cs-04:
     project: .
     host: azure.ai.agent

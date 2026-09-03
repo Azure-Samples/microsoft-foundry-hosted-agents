@@ -31,9 +31,11 @@ IChatClient chatClient = new AIProjectClient(projectEndpoint, credential)
 
 // AsHarnessAgent wraps the chat client with the Microsoft Agent Framework Harness: function
 // invocation, per-service-call chat history persistence, planning, and web search come pre-configured.
+// File memory is disabled because the hosted container filesystem is read-only.
 AIAgent agent = chatClient.AsHarnessAgent(new HarnessAgentOptions
 {
     Name = "HelloHarnessAgent",
+    DisableFileMemory = true,
     ChatOptions = new ChatOptions
     {
         Instructions = "You are the C# Harness hosted agent sample, running on .NET 10 with the Microsoft Agent " +
