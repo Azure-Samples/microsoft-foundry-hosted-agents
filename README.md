@@ -15,7 +15,7 @@ This repository contains a small set of sample Microsoft Agent Framework (MAF) a
 | `MAF-Agents-Samples.slnx` | — | — | Solution file for the four C# projects. |
 | `40-Foundry-Agent-CPP` | C++ | Console app | Calls a Foundry Project from C++20 through Microsoft Entra authentication and the project-scoped Responses REST API. |
 | `41-Foundry-Agent-CPP-Hosted` | C++ | Hosted agent | Reuses the C++ client in a Linux container that exposes Foundry's **Invocations** protocol through cpp-httplib. |
-| `60-MAF-Agent-PY-Hosted` | Python | Hosted agent | Deploys a Microsoft Agent Framework **Responses** agent to a customer-managed AKS cluster connected to a Foundry project. |
+| `60-Hosted-Agent-on-Your-AKS` | Python | Hosted agent | Deploys a Microsoft Agent Framework **Responses** agent to a customer-managed AKS cluster connected to a Foundry project. |
 
 **Console app vs. hosted agent, in plain terms:**
 - A **console app** is a simple, one-shot program you run locally with `dotnet run` or `go run`. It calls Foundry once, prints the answer, and exits. Use these first to confirm your Foundry project and model deployment work.
@@ -96,7 +96,7 @@ From the repository root, build the C#, Go, and C++ samples with the commands
 for your shell. In VS Code on any operating system, you can instead run the
 **Build and test all samples** task. To build the Python sample, follow its
 local development instructions in
-[`60-MAF-Agent-PY-Hosted/README.md`](60-MAF-Agent-PY-Hosted/README.md).
+[`60-Hosted-Agent-on-Your-AKS/README.md`](60-Hosted-Agent-on-Your-AKS/README.md).
 
 > **Dev container and Codespaces:** The initial container setup already runs
 > these builds. Run them again only after changing code or when you want to
@@ -173,7 +173,7 @@ azd ai agent run --start-command "./build/debug/maf_agent_cpp_41"
 
 ### Python BYO AKS hosted agent
 
-See the [Python sample guide](60-MAF-Agent-PY-Hosted/README.md) for preview
+See the [Python sample guide](60-Hosted-Agent-on-Your-AKS/README.md) for preview
 prerequisites, AKS preparation, and Foundry provisioning instructions.
 
 Each launch opens Agent Inspector on port `8087` and hosts the agent on port
@@ -201,7 +201,8 @@ Push-Location ./40-Foundry-Agent-CPP; ctest --preset debug; Pop-Location
 Push-Location ./41-Foundry-Agent-CPP-Hosted; ctest --preset debug; Pop-Location
 ```
 
-For the Python BYO AKS sample, see its [offline test instructions](60-MAF-Agent-PY-Hosted/README.md#run-offline-tests).
+For the Python BYO AKS sample, see its
+[offline test instructions](60-Hosted-Agent-on-Your-AKS/README.md#run-offline-tests).
 
 The C++ tests inject credentials and HTTP transports, so they do not require
 Azure access. The Python sample's unit tests are also offline; its README

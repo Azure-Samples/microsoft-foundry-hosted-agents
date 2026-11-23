@@ -87,7 +87,7 @@ Otherwise, use the scripts to create a cluster and sandbox pool.
 From the root of this repository, change to the sample directory:
 
 ```bash
-cd 60-MAF-Agent-PY-Hosted
+cd 60-Hosted-Agent-on-Your-AKS
 ```
 
 Choose names that aren't already in use, an approved subscription and region,

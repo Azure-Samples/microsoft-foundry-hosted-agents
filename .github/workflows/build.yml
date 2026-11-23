@@ -33,7 +33,7 @@ jobs:
           python-version: "3.13"
 
       - name: Run offline tests
-        run: python -m unittest discover -s 60-MAF-Agent-PY-Hosted/tests -v
+        run: python -m unittest discover -s 60-Hosted-Agent-on-Your-AKS/tests -v
 
   go-build:
     name: Build and test Go samples
