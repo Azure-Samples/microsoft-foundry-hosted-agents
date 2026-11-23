@@ -15,6 +15,7 @@ This repository contains a small set of sample Microsoft Agent Framework (MAF) a
 | `MAF-Agents-Samples.slnx` | — | — | Solution file for the four C# projects. |
 | `40-Foundry-Agent-CPP` | C++ | Console app | Calls a Foundry Project from C++20 through Microsoft Entra authentication and the project-scoped Responses REST API. |
 | `41-Foundry-Agent-CPP-Hosted` | C++ | Hosted agent | Reuses the C++ client in a Linux container that exposes Foundry's **Invocations** protocol through cpp-httplib. |
+| `60-Hosted-Agent-on-Your-AKS` | Python | Hosted agent | Deploys a Microsoft Agent Framework **Responses** agent to a customer-managed AKS cluster connected to a Foundry project. |
 
 **Console app vs. hosted agent, in plain terms:**
 - A **console app** is a simple, one-shot program you run locally with `dotnet run` or `go run`. It calls Foundry once, prints the answer, and exits. Use these first to confirm your Foundry project and model deployment work.
@@ -36,9 +37,9 @@ See [Prerequisites and local setup](docs/prerequisites.md) for:
 
 ## Dev container
 
-The fastest way to prepare all eight samples is to open the repository in its
-devcontainer. It provides .NET 10, Go 1.26, C++20, CMake, Ninja, vcpkg, Azure
-CLI, Azure Developer CLI, and GitHub CLI on Ubuntu 24.04.
+The fastest way to prepare the C#, Go, and C++ samples is to open the repository
+in its devcontainer. It provides .NET 10, Go 1.26, C++20, CMake, Ninja, vcpkg,
+Azure CLI, Azure Developer CLI, and GitHub CLI on Ubuntu 24.04.
 
 [![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/Azure-Samples/microsoft-foundry-hosted-agents)
 
@@ -47,12 +48,13 @@ and the [Dev Containers extension](https://marketplace.visualstudio.com/items?it
 then run **Dev Containers: Reopen in Container** from the VS Code command
 palette. GitHub Codespaces automatically uses the same configuration.
 
-The container automatically builds all eight samples when it is first created.
+The container automatically builds the eight C#, Go, and C++ samples when it
+is first created.
 This can take several minutes while vcpkg builds C++ dependencies. Persistent
 cache volumes make subsequent rebuilds and recreated containers faster. After
 the initialization finishes, you only need to run `az login` inside the
-container, set the environment variables below, and choose an agent from the
-[Run](#run) section.
+container, set the environment variables below, and choose one of the C#, Go,
+or C++ agents from the [Run](#run) section.
 
 The default configuration does not mount a Docker socket. Docker is unnecessary
 for source builds and local runs.
@@ -61,8 +63,11 @@ for source builds and local runs.
 
 All samples use the same two environment variable names:
 
-- `FOUNDRY_PROJECT_ENDPOINT` — your Foundry project endpoint from the prerequisites step above.
-- `AZURE_AI_MODEL_DEPLOYMENT_NAME` — the model deployment name in that project (defaults to `gpt-5-mini` in every sample if unset).
+- `FOUNDRY_PROJECT_ENDPOINT` — your Foundry project endpoint from the
+  prerequisites step above.
+- `AZURE_AI_MODEL_DEPLOYMENT_NAME` — the model deployment name in that project.
+  Most samples default to `gpt-5-mini`; the Python BYO AKS sample documents its
+  model requirement separately.
 
 Use syntax for your current shell. The dev container and Codespaces open Bash
 by default:
@@ -79,15 +84,19 @@ $env:FOUNDRY_PROJECT_ENDPOINT = "https://<resource>.services.ai.azure.com/api/pr
 $env:AZURE_AI_MODEL_DEPLOYMENT_NAME = "gpt-5-mini"
 ```
 
-The variables last only for the current terminal. The samples do not load
-`.env` files automatically. See the [setup guide](docs/prerequisites.md#set-the-environment-variables)
-for Windows Command Prompt syntax and `.env` guidance.
+The variables last only for the current terminal. Most samples do not load
+`.env` files automatically; the Python BYO AKS sample supports `.env` for
+local development. See the
+[setup guide](docs/prerequisites.md#set-the-environment-variables) for Windows
+Command Prompt syntax and `.env` guidance.
 
 ## Build
 
-From the repository root, build all eight samples with the commands for your
-shell. In VS Code on any operating system, you can instead run the
-**Build and test all samples** task.
+From the repository root, build the C#, Go, and C++ samples with the commands
+for your shell. In VS Code on any operating system, you can instead run the
+**Build and test all samples** task. To build the Python sample, follow its
+local development instructions in
+[`60-Hosted-Agent-on-Your-AKS/README.md`](60-Hosted-Agent-on-Your-AKS/README.md).
 
 > **Dev container and Codespaces:** The initial container setup already runs
 > these builds. Run them again only after changing code or when you want to
@@ -162,6 +171,11 @@ azd ai agent run --start-command "./build/debug/maf_agent_cpp_41"
 
 <img src="docs/images/hosted-agent-cpp.jpg" alt="C++ hosted agent responding to hi in Agent Inspector" width="520">
 
+### Python BYO AKS hosted agent
+
+See the [Python sample guide](60-Hosted-Agent-on-Your-AKS/README.md) for preview
+prerequisites, AKS preparation, and Foundry provisioning instructions.
+
 Each launch opens Agent Inspector on port `8087` and hosts the agent on port
 `8088`. Stop the current agent before launching another one.
 
@@ -187,13 +201,20 @@ Push-Location ./40-Foundry-Agent-CPP; ctest --preset debug; Pop-Location
 Push-Location ./41-Foundry-Agent-CPP-Hosted; ctest --preset debug; Pop-Location
 ```
 
+For the Python BYO AKS sample, see its
+[offline test instructions](60-Hosted-Agent-on-Your-AKS/README.md#run-offline-tests).
+
 The C++ tests inject credentials and HTTP transports, so they do not require
-Azure access. The C# samples do not currently have automated tests; they are
-intended as minimal, readable starting points.
+Azure access. The Python sample's unit tests are also offline; its README
+includes the test command. The C# samples do not currently have automated
+tests; they are intended as minimal, readable starting points.
 
 ## Continuous integration
 
-A minimal GitHub Actions workflow (`.github/workflows/build.yml`) builds the .NET solution and builds/tests the Go and C++ samples on every push and pull request to `main`. It does not require Foundry credentials since it only validates that the code compiles and unit tests pass.
+A GitHub Actions workflow (`.github/workflows/build.yml`) builds the .NET
+solution, builds and tests the Go and C++ samples, and runs offline tests for
+the Python sample on every push and pull request to `main`. It does not require
+Foundry credentials.
 
 ## Resources
 

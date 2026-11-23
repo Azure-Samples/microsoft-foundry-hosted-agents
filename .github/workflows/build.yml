@@ -21,6 +21,20 @@ jobs:
       - name: Build solution
         run: dotnet build MAF-Agents-Samples.slnx --configuration Release
 
+  python-tests:
+    name: Test Python BYO AKS sample
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Setup Python
+        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Run offline tests
+        run: python -m unittest discover -s 60-Hosted-Agent-on-Your-AKS/tests -v
+
   go-build:
     name: Build and test Go samples
     runs-on: ubuntu-latest
